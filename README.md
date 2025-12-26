@@ -7,7 +7,7 @@ Research implementation of Network Intrusion Detection System for Smart City env
 
 ## Project Structure
 
-### 📊 Data Analysis & Preprocessing (`EDA/`)
+### Data Analysis & Preprocessing (`EDA/`)
 - **Preprocessing Pipeline**: Automated data cleaning and feature engineering
   - Binary classification (Normal vs Attack)
   - Multi-class classification (Attack type detection)
@@ -15,7 +15,7 @@ Research implementation of Network Intrusion Detection System for Smart City env
 - **Exploratory Data Analysis**: Comprehensive dataset analysis and visualization
 - **Cleaned Dataset**: TON-IoT network traffic data (train/test split)
 
-### 🌸 Federated Learning Implementations
+### Federated Learning Implementations
 
 #### FL_TensorF_Flower_AVG (FedAvg)
 - **Algorithm**: Federated Averaging (McMahan et al.)
@@ -46,7 +46,7 @@ Research implementation of Network Intrusion Detection System for Smart City env
 - **Proximal Term (μ)**: [0.001, 0.01]
 - **Similar grid search capabilities as FedAvg**
 
-### 📈 Experimental Results (`ShortResult/`)
+### Experimental Results (`ShortResult/`)
 - Comprehensive training results and metrics
 - Performance comparison between FedAvg and FedProx
 - Various hyperparameter configurations (alpha 0.3 vs 5.0, different mu values)
