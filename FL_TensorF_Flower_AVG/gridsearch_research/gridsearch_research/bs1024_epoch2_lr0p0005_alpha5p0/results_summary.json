@@ -1,0 +1,43 @@
+{
+  "experiment_name": "bs1024_epoch2_lr0p0005_alpha5p0",
+  "hyperparameters": {
+    "batch_size": 1024,
+    "local_epochs": 2,
+    "learning_rate": 0.0005,
+    "alpha": 5.0,
+    "num_rounds": 20,
+    "num_clients": 5
+  },
+  "binary": {
+    "MLP Binary": {
+      "accuracy": 0.9569523087493189,
+      "precision": 0.9487361209544058,
+      "recall": 0.9974851749511007,
+      "f1_score": 0.9725001135108138,
+      "auc_roc": 0.9941912012170511
+    },
+    "CNN Binary": {
+      "accuracy": 0.9674003174678386,
+      "precision": 0.9909869741074556,
+      "recall": 0.9660653854512714,
+      "f1_score": 0.9783675009432776,
+      "auc_roc": 0.9967980036635723
+    }
+  },
+  "multi": {
+    "MLP Multi": {
+      "accuracy": 0.738302257812315,
+      "precision": 0.7716589844648772,
+      "recall": 0.738302257812315,
+      "f1_score": 0.7311564393857791,
+      "auc_roc": 0.9633284133022618
+    },
+    "CNN Multi": {
+      "accuracy": 0.7404818877490582,
+      "precision": 0.7841751388399595,
+      "recall": 0.7404818877490582,
+      "f1_score": 0.7040207327945731,
+      "auc_roc": 0.9758494645684183
+    }
+  }
+}

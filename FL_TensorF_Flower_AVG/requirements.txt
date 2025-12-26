@@ -1,0 +1,19 @@
+# Core Flower dependencies
+flwr[simulation]>=1.23.0,<2.0
+flwr-datasets[vision]>=0.0.2,<1.0.0
+
+# TensorFlow
+tensorflow[and-cuda]>=2.12.0,<3.0.0
+
+# Data processing
+numpy>=1.21.0,<2.0.0
+pandas>=1.3.0
+scikit-learn>=1.0.0
+
+# Visualization
+matplotlib>=3.5.0
+seaborn>=0.11.0
+
+# Jupyter (for notebooks)
+jupyter>=1.0.0
+ipykernel>=6.0.0

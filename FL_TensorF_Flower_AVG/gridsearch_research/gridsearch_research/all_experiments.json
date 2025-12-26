@@ -1,0 +1,338 @@
+[
+  {
+    "name": "bs256_epoch1_lr0p0010_alpha0p3",
+    "params": {
+      "batch_size": 256,
+      "local_epochs": 1,
+      "learning_rate": 0.001,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T07:03:00.032546",
+    "end_time": "2025-12-10T07:13:16.275041",
+    "duration": 616.242495,
+    "error": null
+  },
+  {
+    "name": "bs256_epoch1_lr0p0010_alpha5p0",
+    "params": {
+      "batch_size": 256,
+      "local_epochs": 1,
+      "learning_rate": 0.001,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T07:13:16.275356",
+    "end_time": "2025-12-10T07:23:39.907473",
+    "duration": 623.632117,
+    "error": null
+  },
+  {
+    "name": "bs256_epoch1_lr0p0005_alpha0p3",
+    "params": {
+      "batch_size": 256,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T07:23:39.907792",
+    "end_time": "2025-12-10T07:33:45.591185",
+    "duration": 605.683393,
+    "error": null
+  },
+  {
+    "name": "bs256_epoch1_lr0p0005_alpha5p0",
+    "params": {
+      "batch_size": 256,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T07:33:45.591523",
+    "end_time": "2025-12-10T07:44:07.458151",
+    "duration": 621.866628,
+    "error": null
+  },
+  {
+    "name": "bs256_epoch2_lr0p0010_alpha0p3",
+    "params": {
+      "batch_size": 256,
+      "local_epochs": 2,
+      "learning_rate": 0.001,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T07:44:07.458482",
+    "end_time": "2025-12-10T07:59:14.673947",
+    "duration": 907.215465,
+    "error": null
+  },
+  {
+    "name": "bs256_epoch2_lr0p0010_alpha5p0",
+    "params": {
+      "batch_size": 256,
+      "local_epochs": 2,
+      "learning_rate": 0.001,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T07:59:14.674290",
+    "end_time": "2025-12-10T08:13:24.721083",
+    "duration": 850.046793,
+    "error": null
+  },
+  {
+    "name": "bs256_epoch2_lr0p0005_alpha0p3",
+    "params": {
+      "batch_size": 256,
+      "local_epochs": 2,
+      "learning_rate": 0.0005,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T08:13:24.721441",
+    "end_time": "2025-12-10T08:28:09.587994",
+    "duration": 884.866553,
+    "error": null
+  },
+  {
+    "name": "bs256_epoch2_lr0p0005_alpha5p0",
+    "params": {
+      "batch_size": 256,
+      "local_epochs": 2,
+      "learning_rate": 0.0005,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T08:28:09.597354",
+    "end_time": "2025-12-10T08:42:23.228039",
+    "duration": 853.630685,
+    "error": null
+  },
+  {
+    "name": "bs512_epoch1_lr0p0010_alpha0p3",
+    "params": {
+      "batch_size": 512,
+      "local_epochs": 1,
+      "learning_rate": 0.001,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T08:42:23.228428",
+    "end_time": "2025-12-10T08:52:26.148616",
+    "duration": 602.920188,
+    "error": null
+  },
+  {
+    "name": "bs512_epoch1_lr0p0010_alpha5p0",
+    "params": {
+      "batch_size": 512,
+      "local_epochs": 1,
+      "learning_rate": 0.001,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T08:52:26.148972",
+    "end_time": "2025-12-10T09:02:56.598258",
+    "duration": 630.449286,
+    "error": null
+  },
+  {
+    "name": "bs512_epoch1_lr0p0005_alpha0p3",
+    "params": {
+      "batch_size": 512,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T09:02:56.598676",
+    "end_time": "2025-12-10T09:13:02.577902",
+    "duration": 605.979226,
+    "error": null
+  },
+  {
+    "name": "bs512_epoch1_lr0p0005_alpha5p0",
+    "params": {
+      "batch_size": 512,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T09:13:02.578341",
+    "end_time": "2025-12-10T09:23:19.863236",
+    "duration": 617.284895,
+    "error": null
+  },
+  {
+    "name": "bs512_epoch2_lr0p0010_alpha0p3",
+    "params": {
+      "batch_size": 512,
+      "local_epochs": 2,
+      "learning_rate": 0.001,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T09:23:19.863684",
+    "end_time": "2025-12-10T09:38:06.231366",
+    "duration": 886.367682,
+    "error": null
+  },
+  {
+    "name": "bs512_epoch2_lr0p0010_alpha5p0",
+    "params": {
+      "batch_size": 512,
+      "local_epochs": 2,
+      "learning_rate": 0.001,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T09:38:06.231751",
+    "end_time": "2025-12-10T09:52:40.135586",
+    "duration": 873.903835,
+    "error": null
+  },
+  {
+    "name": "bs512_epoch2_lr0p0005_alpha0p3",
+    "params": {
+      "batch_size": 512,
+      "local_epochs": 2,
+      "learning_rate": 0.0005,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T09:52:40.136001",
+    "end_time": "2025-12-10T10:07:39.100794",
+    "duration": 898.964793,
+    "error": null
+  },
+  {
+    "name": "bs512_epoch2_lr0p0005_alpha5p0",
+    "params": {
+      "batch_size": 512,
+      "local_epochs": 2,
+      "learning_rate": 0.0005,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T10:07:39.101303",
+    "end_time": "2025-12-10T10:22:20.197565",
+    "duration": 881.096262,
+    "error": null
+  },
+  {
+    "name": "bs1024_epoch1_lr0p0010_alpha0p3",
+    "params": {
+      "batch_size": 1024,
+      "local_epochs": 1,
+      "learning_rate": 0.001,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T10:22:20.204189",
+    "end_time": "2025-12-10T10:32:21.100281",
+    "duration": 600.896092,
+    "error": null
+  },
+  {
+    "name": "bs1024_epoch1_lr0p0010_alpha5p0",
+    "params": {
+      "batch_size": 1024,
+      "local_epochs": 1,
+      "learning_rate": 0.001,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T10:32:21.100740",
+    "end_time": "2025-12-10T10:42:44.599378",
+    "duration": 623.498638,
+    "error": null
+  },
+  {
+    "name": "bs1024_epoch1_lr0p0005_alpha0p3",
+    "params": {
+      "batch_size": 1024,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T10:42:44.599898",
+    "end_time": "2025-12-10T10:52:51.334509",
+    "duration": 606.734611,
+    "error": null
+  },
+  {
+    "name": "bs1024_epoch1_lr0p0005_alpha5p0",
+    "params": {
+      "batch_size": 1024,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T10:52:51.335046",
+    "end_time": "2025-12-10T11:03:06.168440",
+    "duration": 614.833394,
+    "error": null
+  },
+  {
+    "name": "bs1024_epoch2_lr0p0010_alpha0p3",
+    "params": {
+      "batch_size": 1024,
+      "local_epochs": 2,
+      "learning_rate": 0.001,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T11:03:06.168934",
+    "end_time": "2025-12-10T11:18:00.733615",
+    "duration": 894.564681,
+    "error": null
+  },
+  {
+    "name": "bs1024_epoch2_lr0p0010_alpha5p0",
+    "params": {
+      "batch_size": 1024,
+      "local_epochs": 2,
+      "learning_rate": 0.001,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T11:18:00.734179",
+    "end_time": "2025-12-10T11:33:13.324419",
+    "duration": 912.59024,
+    "error": null
+  },
+  {
+    "name": "bs1024_epoch2_lr0p0005_alpha0p3",
+    "params": {
+      "batch_size": 1024,
+      "local_epochs": 2,
+      "learning_rate": 0.0005,
+      "alpha": 0.3
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T11:33:13.324906",
+    "end_time": "2025-12-10T11:48:17.269576",
+    "duration": 903.94467,
+    "error": null
+  },
+  {
+    "name": "bs1024_epoch2_lr0p0005_alpha5p0",
+    "params": {
+      "batch_size": 1024,
+      "local_epochs": 2,
+      "learning_rate": 0.0005,
+      "alpha": 5.0
+    },
+    "status": "completed",
+    "start_time": "2025-12-10T11:48:17.270139",
+    "end_time": "2025-12-10T12:03:53.891987",
+    "duration": 936.621848,
+    "error": null
+  }
+]

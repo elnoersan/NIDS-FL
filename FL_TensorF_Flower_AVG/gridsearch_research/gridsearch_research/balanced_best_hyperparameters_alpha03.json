@@ -1,0 +1,111 @@
+{
+  "analysis_type": "Cost-Benefit Analysis: Performance vs Training Time",
+  "methodology": "Multi-criteria optimization with Pareto optimality analysis",
+  "note": "Duration represents TOTAL time to train all 4 models (MLP/CNN x Binary/Multi)",
+  "alpha": 0.3,
+  "metric_weights": {
+    "accuracy": 0.2,
+    "precision": 0.2,
+    "recall": 0.2,
+    "f1_score": 0.2,
+    "auc_roc": 0.2
+  },
+  "time_statistics": {
+    "fastest_seconds": 600.896092,
+    "fastest_minutes": 10.014934866666666,
+    "slowest_seconds": 907.215465,
+    "slowest_minutes": 15.12025775,
+    "range_minutes": 5.105322883333334,
+    "note": "Time for training ALL 4 models with same hyperparameters"
+  },
+  "optimization_scenarios": {
+    "Performance_Focused": {
+      "weights": {
+        "performance": 0.8,
+        "time": 0.2
+      },
+      "model": "CNN",
+      "batch_size": 512,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "optimization_score": 0.9445823625219566,
+      "duration_minutes": 10.099653766666668,
+      "efficiency_score": 0.9270344882918123,
+      "roi_score": 0.026054687172342206
+    },
+    "Balanced": {
+      "weights": {
+        "performance": 0.6,
+        "time": 0.4
+      },
+      "model": "CNN",
+      "batch_size": 512,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "optimization_score": 0.9542882144967642,
+      "duration_minutes": 10.099653766666668,
+      "efficiency_score": 0.9270344882918123,
+      "roi_score": 0.026054687172342206
+    },
+    "Time_Focused": {
+      "weights": {
+        "performance": 0.4,
+        "time": 0.6
+      },
+      "model": "CNN",
+      "batch_size": 512,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "optimization_score": 0.9639940664715717,
+      "duration_minutes": 10.099653766666668,
+      "efficiency_score": 0.9270344882918123,
+      "roi_score": 0.026054687172342206
+    },
+    "Efficiency": {
+      "weights": {
+        "performance": 0.5,
+        "time": 0.5
+      },
+      "model": "CNN",
+      "batch_size": 512,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "optimization_score": 0.9591411404841679,
+      "duration_minutes": 10.099653766666668,
+      "efficiency_score": 0.9270344882918123,
+      "roi_score": 0.026054687172342206
+    }
+  },
+  "recommended_configuration": {
+    "scenario": "Balanced (60% Performance, 40% Time)",
+    "model_type": "CNN",
+    "batch_size": 512,
+    "local_epochs": 1,
+    "learning_rate": 0.0005,
+    "optimization_score": 0.9542882144967642,
+    "normalized_performance": 0.9348765105471489,
+    "normalized_time_score": 0.9834057704211869,
+    "performance_per_second": 0.0014223110707742,
+    "efficiency_score": 0.9270344882918123,
+    "roi_score": 0.026054687172342206,
+    "training_duration_seconds": 605.979226,
+    "training_duration_minutes": 10.099653766666668,
+    "estimated_time_per_model_minutes": 2.524913441666667,
+    "binary_classification": {
+      "weighted_score": 0.9744233838418028,
+      "accuracy": 0.9571181501575493,
+      "precision": 0.94866723735868,
+      "recall": 0.9977956471793598,
+      "f1_score": 0.9726114456919771,
+      "auc_roc": 0.9959244388214475
+    },
+    "multi_class_classification": {
+      "weighted_score": 0.7868693471037664,
+      "accuracy": 0.7327110331919733,
+      "precision": 0.782661764370692,
+      "recall": 0.7327110331919733,
+      "f1_score": 0.7099074209848981,
+      "auc_roc": 0.9763554837792956
+    }
+  }
+}

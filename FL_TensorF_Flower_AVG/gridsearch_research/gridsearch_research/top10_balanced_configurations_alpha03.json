@@ -1,0 +1,78 @@
+{
+  "type": "Pareto Optimal Configurations",
+  "description": "Configurations not dominated by any other in both performance and time",
+  "note": "Duration is for training all 4 models (MLP/CNN x Binary/Multi)",
+  "count": 5,
+  "pareto_optimal": [
+    {
+      "model": "CNN",
+      "batch_size": 1024,
+      "local_epochs": 2,
+      "learning_rate": 0.001,
+      "normalized_performance": 1.0,
+      "normalized_time_score": 0.041299327156823495,
+      "duration_minutes": 14.90941135,
+      "estimated_time_per_model_min": 3.7273528375,
+      "efficiency_score": 0.6717189989306094,
+      "roi_score": 0.0005753407762126204,
+      "binary_auc_roc": 0.9971056862988606,
+      "multi_auc_roc": 0.983698693298557
+    },
+    {
+      "model": "CNN",
+      "batch_size": 512,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "normalized_performance": 0.9348765105471489,
+      "normalized_time_score": 0.9834057704211869,
+      "duration_minutes": 10.099653766666668,
+      "estimated_time_per_model_min": 2.524913441666667,
+      "efficiency_score": 0.9270344882918123,
+      "roi_score": 0.026054687172342206,
+      "binary_auc_roc": 0.9959244388214475,
+      "multi_auc_roc": 0.9763554837792956
+    },
+    {
+      "model": "CNN",
+      "batch_size": 256,
+      "local_epochs": 1,
+      "learning_rate": 0.0005,
+      "normalized_performance": 0.8868840044921541,
+      "normalized_time_score": 0.9843715369579316,
+      "duration_minutes": 10.094723216666667,
+      "estimated_time_per_model_min": 2.5236808041666667,
+      "efficiency_score": 0.8798741033942229,
+      "roi_score": 0.02598063429839255,
+      "binary_auc_roc": 0.9966942593684995,
+      "multi_auc_roc": 0.9689583713527482
+    },
+    {
+      "model": "MLP",
+      "batch_size": 512,
+      "local_epochs": 1,
+      "learning_rate": 0.001,
+      "normalized_performance": 0.7150533719177259,
+      "normalized_time_score": 0.9933922037637493,
+      "duration_minutes": 10.0486698,
+      "estimated_time_per_model_min": 2.51216745,
+      "efficiency_score": 0.7126528275360784,
+      "roi_score": 0.0400868456311047,
+      "binary_auc_roc": 0.9930793706727933,
+      "multi_auc_roc": 0.9619517622531698
+    },
+    {
+      "model": "MLP",
+      "batch_size": 1024,
+      "local_epochs": 1,
+      "learning_rate": 0.001,
+      "normalized_performance": 0.6737853943547268,
+      "normalized_time_score": 1.0,
+      "duration_minutes": 10.014934866666666,
+      "estimated_time_per_model_min": 2.5037337166666664,
+      "efficiency_score": 0.6737853943547268,
+      "roi_score": 0.1142301089448835,
+      "binary_auc_roc": 0.9926110264211866,
+      "multi_auc_roc": 0.9587651689170406
+    }
+  ]
+}
