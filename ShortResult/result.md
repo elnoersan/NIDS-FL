@@ -16,7 +16,8 @@ Melatih Model MLP Binary...
 
 [INFO] Starting Flower federated learning for mlp_binary...
    Clients: 5 | Rounds: 20 | Local epochs: 1
-I0000 00:00:1765910947.710974  816873 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2082 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
+I0000 00:00:1765910947.710974  816873 gpu_device.cc:2020 Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2082 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
+```
       Round 1 - Avg Train Loss: 0.5128
       Round 1 - Avg Train Acc: 0.8829 - Time: 9.77s
       Round 2 - Avg Train Loss: 0.3424
@@ -58,6 +59,7 @@ I0000 00:00:1765910947.710974  816873 gpu_device.cc:2020] Created device /job:lo
       Round 20 - Avg Train Loss: 0.1239
       Round 20 - Avg Train Acc: 0.9530 - Time: 2.65s
    ✓ Model weights updated from federated training
+   ```
 
 Federated learning completed in 62.93s
    Captured 20 rounds of training metrics
@@ -67,6 +69,7 @@ Melatih Model CNN Binary...
 
 [INFO] Starting Flower federated learning for cnn_binary...
    Clients: 5 | Rounds: 20 | Local epochs: 1
+   ```
       Round 1 - Avg Train Loss: 0.2837
       Round 1 - Avg Train Acc: 0.8851 - Time: 13.40s
       Round 2 - Avg Train Loss: 0.1478
@@ -108,6 +111,7 @@ Melatih Model CNN Binary...
       Round 20 - Avg Train Loss: 0.0768
       Round 20 - Avg Train Acc: 0.9678 - Time: 8.01s
    ✓ Model weights updated from federated training
+   ```
 
 Federated learning completed in 160.82s
    Captured 20 rounds of training metrics
@@ -119,6 +123,7 @@ Melatih Model MLP Multi-class...
 
 [INFO] Starting Flower federated learning for mlp_multi...
    Clients: 5 | Rounds: 20 | Local epochs: 1
+   ```
       Round 1 - Avg Train Loss: 2.0829
       Round 1 - Avg Train Acc: 0.5779 - Time: 10.48s
       Round 2 - Avg Train Loss: 1.6193
@@ -160,7 +165,7 @@ Melatih Model MLP Multi-class...
       Round 20 - Avg Train Loss: 0.7390
       Round 20 - Avg Train Acc: 0.7195 - Time: 4.76s
    ✓ Model weights updated from federated training
-
+```
 Federated learning completed in 88.37s
    Captured 20 rounds of training metrics
    Avg time per round: 4.37s
@@ -169,6 +174,7 @@ Melatih Model CNN Multi-class...
 
 [INFO] Starting Flower federated learning for cnn_multi...
    Clients: 5 | Rounds: 20 | Local epochs: 1
+```
       Round 1 - Avg Train Loss: 1.3692
       Round 1 - Avg Train Acc: 0.5452 - Time: 19.96s
       Round 2 - Avg Train Loss: 0.9916
@@ -210,7 +216,7 @@ Melatih Model CNN Multi-class...
       Round 20 - Avg Train Loss: 0.6006
       Round 20 - Avg Train Acc: 0.7663 - Time: 12.82s
    ✓ Model weights updated from federated training
-
+```
 Federated learning completed in 305.22s
    Captured 20 rounds of training metrics
    Avg time per round: 15.10s
@@ -219,26 +225,29 @@ Semua model berhasil dilatih!
 
 #### Model Evaluasi
 
-2025-12-17 01:59:26.173593: I external/local_xla/xla/service/service.cc:163] XLA service 0x7f6c600197e0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
-2025-12-17 01:59:26.173608: I external/local_xla/xla/service/service.cc:171]   StreamExecutor device (0): NVIDIA GeForce GTX 1650 SUPER, Compute Capability 7.5
-2025-12-17 01:59:26.177938: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+2025-12-17 01:59:26.173593: I external/local_xla/xla/service/service.cc:163 XLA service 0x7f6c600197e0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2025-12-17 01:59:26.173608: I external/local_xla/xla/service/service.cc:171   StreamExecutor device (0): NVIDIA GeForce GTX 1650 SUPER, Compute Capability 7.5
+2025-12-17 01:59:26.177938: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269 disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
 
 EVALUASI SEMUA MODEL
 
 --- EVALUASI MODEL BINARY ---
 
 [1/4] MLP Binary...
-2025-12-17 01:59:26.210944: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:473] Loaded cuDNN version 91600
-I0000 00:00:1765911566.486509  816941 device_compiler.h:196] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+2025-12-17 01:59:26.210944: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:473 Loaded cuDNN version 91600
+I0000 00:00:1765911566.486509  816941 device_compiler.h:196 Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
 
 📊 EVALUATION METRICS - MLP Binary (FedAvg):
-   • Accuracy: 0.9569
-   • Precision: 0.9487
-   • Recall: 0.9974
-   • F1 Score: 0.9725
-   • AUC-ROC: 0.9929
+```
+Accuracy:  0.9569
+Precision: 0.9487
+Recall:    0.9974
+F1 Score:  0.9725
+AUC-ROC:   0.9929
+```
 
 📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.99      0.83      0.90     10000
@@ -247,17 +256,21 @@ I0000 00:00:1765911566.486509  816941 device_compiler.h:196] Compiled cluster us
     accuracy                           0.96     42209
    macro avg       0.97      0.91      0.94     42209
 weighted avg       0.96      0.96      0.96     42209
+```
 
 [2/4] CNN Binary...
 
 📊 EVALUATION METRICS - CNN Binary (FedAvg):
-   • Accuracy: 0.9698
-   • Precision: 0.9916
-   • Recall: 0.9686
-   • F1 Score: 0.9800
-   • AUC-ROC: 0.9968
+```
+Accuracy:  0.9698
+Precision: 0.9916
+Recall:    0.9686
+F1 Score:  0.9800
+AUC-ROC:   0.9968
+```
 
 📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.91      0.97      0.94     10000
@@ -266,19 +279,23 @@ weighted avg       0.96      0.96      0.96     42209
     accuracy                           0.97     42209
    macro avg       0.95      0.97      0.96     42209
 weighted avg       0.97      0.97      0.97     42209
+```
 
 --- EVALUASI MODEL MULTI-CLASS ---
 
 [3/4] MLP Multi-class...
 
 📊 EVALUATION METRICS - MLP Multi (FedAvg):
-   • Accuracy: 0.7111
-   • Precision: 0.7462
-   • Recall: 0.7111
-   • F1 Score: 0.6757
-   • AUC-ROC: 0.9582
+```
+Accuracy:  0.7111
+Precision: 0.7462
+Recall:    0.7111
+F1 Score:  0.6757
+AUC-ROC:   0.9582
+```
 
 📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.45      0.99      0.62      4000
@@ -295,17 +312,21 @@ weighted avg       0.97      0.97      0.97     42209
     accuracy                           0.71     42209
    macro avg       0.67      0.63      0.58     42209
 weighted avg       0.75      0.71      0.68     42209
+```
 
 [4/4] CNN Multi-class...
 
 📊 EVALUATION METRICS - CNN Multi (FedAvg):
-   • Accuracy: 0.7778
-   • Precision: 0.8018
-   • Recall: 0.7778
-   • F1 Score: 0.7664
-   • AUC-ROC: 0.9850
+```
+Accuracy:  0.7778
+Precision: 0.8018
+Recall:    0.7778
+F1 Score:  0.7664
+AUC-ROC:   0.9850
+```
 
 📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.46      1.00      0.63      4000
@@ -322,6 +343,7 @@ weighted avg       0.75      0.71      0.68     42209
     accuracy                           0.78     42209
    macro avg       0.75      0.69      0.69     42209
 weighted avg       0.80      0.78      0.77     42209
+```
 
 ---
 
@@ -340,7 +362,8 @@ Melatih Model MLP Binary...
 [INFO] Starting Flower federated learning for mlp_binary...
    Clients: 5 | Rounds: 20 | Local epochs: 1
 
-I0000 00:00:1765912305.622348  870034 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2103 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
+I0000 00:00:1765912305.622348  870034 gpu_device.cc:2020 Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2103 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
+```
       Round 1 - Avg Train Loss: 0.6679
       Round 1 - Avg Train Acc: 0.7594 - Time: 8.85s
       Round 2 - Avg Train Loss: 0.2735
@@ -382,6 +405,7 @@ I0000 00:00:1765912305.622348  870034 gpu_device.cc:2020] Created device /job:lo
       Round 20 - Avg Train Loss: 0.0799
       Round 20 - Avg Train Acc: 0.9725 - Time: 2.73s
    ✓ Model weights updated from federated training
+   ```
 
 Federated learning completed in 63.17s
    Captured 20 rounds of training metrics
@@ -391,6 +415,7 @@ Melatih Model CNN Binary...
 
 [INFO] Starting Flower federated learning for cnn_binary...
    Clients: 5 | Rounds: 20 | Local epochs: 1
+   ```
       Round 1 - Avg Train Loss: 0.4952
       Round 1 - Avg Train Acc: 0.7091 - Time: 13.13s
       Round 2 - Avg Train Loss: 0.0969
@@ -432,6 +457,7 @@ Melatih Model CNN Binary...
       Round 20 - Avg Train Loss: 0.0515
       Round 20 - Avg Train Acc: 0.9815 - Time: 7.24s
    ✓ Model weights updated from federated training
+   ```
 
 Federated learning completed in 151.44s
    Captured 20 rounds of training metrics
@@ -443,7 +469,7 @@ Melatih Model MLP Multi-class...
 
 [INFO] Starting Flower federated learning for mlp_multi...
    Clients: 5 | Rounds: 20 | Local epochs: 1
-
+```
       Round 1 - Avg Train Loss: 1.8523
       Round 1 - Avg Train Acc: 0.6984 - Time: 10.76s
       Round 2 - Avg Train Loss: 1.4191
@@ -485,6 +511,7 @@ Melatih Model MLP Multi-class...
       Round 20 - Avg Train Loss: 0.5637
       Round 20 - Avg Train Acc: 0.8224 - Time: 3.66s
    ✓ Model weights updated from federated training
+   ```
 
 Federated learning completed in 87.43s
    Captured 20 rounds of training metrics
@@ -494,6 +521,7 @@ Melatih Model CNN Multi-class...
 
 [INFO] Starting Flower federated learning for cnn_multi...
    Clients: 5 | Rounds: 20 | Local epochs: 1
+   ```
       Round 1 - Avg Train Loss: 1.0618
       Round 1 - Avg Train Acc: 0.6840 - Time: 18.72s
       Round 2 - Avg Train Loss: 0.7744
@@ -535,6 +563,7 @@ Melatih Model CNN Multi-class...
       Round 20 - Avg Train Loss: 0.4721
       Round 20 - Avg Train Acc: 0.8471 - Time: 13.43s
    ✓ Model weights updated from federated training
+   ```
 
 Federated learning completed in 304.76s
    Captured 20 rounds of training metrics
@@ -549,20 +578,23 @@ EVALUASI SEMUA MODEL
 --- EVALUASI MODEL BINARY ---
 
 [1/4] MLP Binary...
-2025-12-17 02:21:53.548803: I external/local_xla/xla/service/service.cc:163] XLA service 0x7fce58006270 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
-2025-12-17 02:21:53.548818: I external/local_xla/xla/service/service.cc:171]   StreamExecutor device (0): NVIDIA GeForce GTX 1650 SUPER, Compute Capability 7.5
-2025-12-17 02:21:53.552657: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
-2025-12-17 02:21:53.586066: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:473] Loaded cuDNN version 91600
-I0000 00:00:1765912913.850656  870270 device_compiler.h:196] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+2025-12-17 02:21:53.548803: I external/local_xla/xla/service/service.cc:163 XLA service 0x7fce58006270 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2025-12-17 02:21:53.548818: I external/local_xla/xla/service/service.cc:171   StreamExecutor device (0): NVIDIA GeForce GTX 1650 SUPER, Compute Capability 7.5
+2025-12-17 02:21:53.552657: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269 disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+2025-12-17 02:21:53.586066: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:473 Loaded cuDNN version 91600
+I0000 00:00:1765912913.850656  870270 device_compiler.h:196 Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
 
 📊 EVALUATION METRICS - MLP Binary (FedAvg):
-   • Accuracy: 0.9562
-   • Precision: 0.9474
-   • Recall: 0.9980
-   • F1 Score: 0.9720
-   • AUC-ROC: 0.9927
+```
+Accuracy:  0.9562
+Precision: 0.9474
+Recall:    0.9980
+F1 Score:  0.9720
+AUC-ROC:   0.9927
+```
 
 📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.99      0.82      0.90     10000
@@ -571,17 +603,21 @@ I0000 00:00:1765912913.850656  870270 device_compiler.h:196] Compiled cluster us
     accuracy                           0.96     42209
    macro avg       0.97      0.91      0.94     42209
 weighted avg       0.96      0.96      0.95     42209
+```
 
 [2/4] CNN Binary...
 
 📊 EVALUATION METRICS - CNN Binary (FedAvg):
-   • Accuracy: 0.9571
-   • Precision: 0.9490
-   • Recall: 0.9974
-   • F1 Score: 0.9726
-   • AUC-ROC: 0.9961
+```
+Accuracy:  0.9571
+Precision: 0.9490
+Recall:    0.9974
+F1 Score:  0.9726
+AUC-ROC:   0.9961
+```
 
 📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.99      0.83      0.90     10000
@@ -590,19 +626,23 @@ weighted avg       0.96      0.96      0.95     42209
     accuracy                           0.96     42209
    macro avg       0.97      0.91      0.94     42209
 weighted avg       0.96      0.96      0.96     42209
+```
 
 --- EVALUASI MODEL MULTI-CLASS ---
 
 [3/4] MLP Multi-class...
 
 📊 EVALUATION METRICS - MLP Multi (FedAvg):
-   • Accuracy: 0.6695
-   • Precision: 0.6830
-   • Recall: 0.6695
-   • F1 Score: 0.6323
-   • AUC-ROC: 0.9604
+```
+Accuracy:  0.6695
+Precision: 0.6830
+Recall:    0.6695
+F1 Score:  0.6323
+AUC-ROC:   0.9604
+```
 
 📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.00      0.00      0.00      4000
@@ -619,17 +659,21 @@ weighted avg       0.96      0.96      0.96     42209
     accuracy                           0.67     42209
    macro avg       0.59      0.58      0.53     42209
 weighted avg       0.68      0.67      0.63     42209
+```
 
 [4/4] CNN Multi-class...
 
 📊 EVALUATION METRICS - CNN Multi (FedAvg):
-   • Accuracy: 0.6918
-   • Precision: 0.7923
-   • Recall: 0.6918
-   • F1 Score: 0.6554
-   • AUC-ROC: 0.9742
+```
+Accuracy:  0.6918
+Precision: 0.7923
+Recall:    0.6918
+F1 Score:  0.6554
+AUC-ROC:   0.9742
+```
 
 📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       1.00      0.00      0.00      4000
@@ -646,6 +690,7 @@ weighted avg       0.68      0.67      0.63     42209
     accuracy                           0.69     42209
    macro avg       0.75      0.61      0.57     42209
 weighted avg       0.79      0.69      0.66     42209
+```
 
 ---
 
@@ -668,7 +713,8 @@ Melatih Model MLP Binary...
    Clients: 5 | Rounds: 20 | Local epochs: 1
    Proximal term (μ): 0.01
 
-I0000 00:00:1765913711.289869  917371 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2103 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
+I0000 00:00:1765913711.289869  917371 gpu_device.cc:2020 Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2103 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
+```
       Round 1 - Avg Train Loss: 0.7093
       Round 1 - Avg Train Acc: 0.8837 - Time: 9.60s
       Round 2 - Avg Train Loss: 0.7389
@@ -710,6 +756,7 @@ I0000 00:00:1765913711.289869  917371 gpu_device.cc:2020] Created device /job:lo
       Round 20 - Avg Train Loss: 0.7395
       Round 20 - Avg Train Acc: 0.9522 - Time: 4.33s
    ✓ Model weights updated from FedProx training
+   ```
 
 FedProx federated learning completed in 87.38s
    Captured 20 rounds of training metrics
@@ -720,6 +767,7 @@ Melatih Model CNN Binary...
 [INFO] Starting Flower FedProx federated learning for cnn_binary...
    Clients: 5 | Rounds: 20 | Local epochs: 1
    Proximal term (μ): 0.01
+   ```
       Round 1 - Avg Train Loss: 0.7161
       Round 1 - Avg Train Acc: 0.8878 - Time: 13.54s
       Round 2 - Avg Train Loss: 0.7368
@@ -761,6 +809,7 @@ Melatih Model CNN Binary...
       Round 20 - Avg Train Loss: 0.7381
       Round 20 - Avg Train Acc: 0.9667 - Time: 9.49s
    ✓ Model weights updated from FedProx training
+   ```
 
 FedProx federated learning completed in 185.51s
    Captured 20 rounds of training metrics
@@ -773,6 +822,7 @@ Melatih Model MLP Multi-class...
 [INFO] Starting Flower FedProx federated learning for mlp_multi...
    Clients: 5 | Rounds: 20 | Local epochs: 1
    Proximal term (μ): 0.01
+   ```
       Round 1 - Avg Train Loss: 0.1000
       Round 1 - Avg Train Acc: 0.5613 - Time: 10.91s
       Round 2 - Avg Train Loss: 0.1000
@@ -814,6 +864,7 @@ Melatih Model MLP Multi-class...
       Round 20 - Avg Train Loss: 0.1000
       Round 20 - Avg Train Acc: 0.7204 - Time: 6.05s
    ✓ Model weights updated from FedProx training
+   ```
 
 FedProx federated learning completed in 115.19s
    Captured 20 rounds of training metrics
@@ -824,6 +875,7 @@ FedProx federated learning completed in 115.19s
 [INFO] Starting Flower FedProx federated learning for cnn_multi...
    Clients: 5 | Rounds: 20 | Local epochs: 1
    Proximal term (μ): 0.01
+   ```
       Round 1 - Avg Train Loss: 0.1000
       Round 1 - Avg Train Acc: 0.5321 - Time: 18.60s
       Round 2 - Avg Train Loss: 0.1000
@@ -865,6 +917,7 @@ FedProx federated learning completed in 115.19s
       Round 20 - Avg Train Loss: 0.1000
       Round 20 - Avg Train Acc: 0.7767 - Time: 16.28s
    ✓ Model weights updated from FedProx training
+   ```
 
 FedProx federated learning completed in 327.97s
    Captured 20 rounds of training metrics
@@ -874,25 +927,25 @@ Semua model berhasil dilatih dengan FedProx!
 
 #### Model Evaluasi
 
-2025-12-17 02:47:08.474884: I external/local_xla/xla/service/service.cc:163] XLA service 0x7fb924011480 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
-2025-12-17 02:47:08.474899: I external/local_xla/xla/service/service.cc:171]   StreamExecutor device (0): NVIDIA GeForce GTX 1650 SUPER, Compute Capability 7.5
-2025-12-17 02:47:08.479594: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+2025-12-17 02:47:08.474884: I external/local_xla/xla/service/service.cc:163 XLA service 0x7fb924011480 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2025-12-17 02:47:08.474899: I external/local_xla/xla/service/service.cc:171   StreamExecutor device (0): NVIDIA GeForce GTX 1650 SUPER, Compute Capability 7.5
+2025-12-17 02:47:08.479594: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269 disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
 
 --- EVALUASI MODEL BINARY ---
 
 [1/4] MLP Binary...
-2025-12-17 02:47:08.512736: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:473] Loaded cuDNN version 91600
-I0000 00:00:1765914428.776009  917959 device_compiler.h:196] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
 
-EVALUATION METRICS - MLP Binary (FedProx):
+📊 EVALUATION METRICS - MLP Binary (FedProx):
+```
+Accuracy:  0.9569
+Precision: 0.9487
+Recall:    0.9974
+F1 Score:  0.9725
+AUC-ROC:   0.9933
+```
 
-- Accuracy: 0.9569
-- Precision: 0.9487
-- Recall: 0.9974
-- F1 Score: 0.9725
-- AUC-ROC: 0.9933
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.99      0.83      0.90     10000
@@ -901,18 +954,21 @@ CLASSIFICATION REPORT:
     accuracy                           0.96     42209
    macro avg       0.97      0.91      0.94     42209
 weighted avg       0.96      0.96      0.96     42209
+```
 
 [2/4] CNN Binary...
 
-EVALUATION METRICS - CNN Binary (FedProx):
+📊 EVALUATION METRICS - CNN Binary (FedProx):
+```
+Accuracy:  0.9687
+Precision: 0.9928
+Recall:    0.9660
+F1 Score:  0.9792
+AUC-ROC:   0.9969
+```
 
-- Accuracy: 0.9687
-- Precision: 0.9928
-- Recall: 0.9660
-- F1 Score: 0.9792
-- AUC-ROC: 0.9969
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.90      0.98      0.94     10000
@@ -921,20 +977,23 @@ CLASSIFICATION REPORT:
     accuracy                           0.97     42209
    macro avg       0.95      0.97      0.96     42209
 weighted avg       0.97      0.97      0.97     42209
+```
 
 --- EVALUASI MODEL MULTI-CLASS ---
 
 [3/4] MLP Multi-class...
 
-EVALUATION METRICS - MLP Multi (FedProx):
+📊 EVALUATION METRICS - MLP Multi (FedProx):
+```
+Accuracy:  0.7027
+Precision: 0.7292
+Recall:    0.7027
+F1 Score:  0.6816
+AUC-ROC:   0.9647
+```
 
-- Accuracy: 0.7027
-- Precision: 0.7292
-- Recall: 0.7027
-- F1 Score: 0.6816
-- AUC-ROC: 0.9647
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.45      0.99      0.62      4000
@@ -951,18 +1010,21 @@ CLASSIFICATION REPORT:
     accuracy                           0.70     42209
    macro avg       0.62      0.62      0.58     42209
 weighted avg       0.73      0.70      0.68     42209
+```
 
 [4/4] CNN Multi-class...
 
-EVALUATION METRICS - CNN Multi (FedProx):
+📊 EVALUATION METRICS - CNN Multi (FedProx):
+```
+Accuracy:  0.7718
+Precision: 0.8083
+Recall:    0.7718
+F1 Score:  0.7649
+AUC-ROC:   0.9815
+```
 
-- Accuracy: 0.7718
-- Precision: 0.8083
-- Recall: 0.7718
-- F1 Score: 0.7649
-- AUC-ROC: 0.9815
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.48      0.99      0.65      4000
@@ -979,6 +1041,7 @@ CLASSIFICATION REPORT:
     accuracy                           0.77     42209
    macro avg       0.76      0.68      0.69     42209
 weighted avg       0.81      0.77      0.76     42209
+```
 
 ---
 
@@ -997,7 +1060,8 @@ Melatih Model MLP Binary...
    Clients: 5 | Rounds: 20 | Local epochs: 1
    Proximal term (μ): 0.001
 
-I0000 00:00:1765916573.415830  977181 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2211 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
+I0000 00:00:1765916573.415830  977181 gpu_device.cc:2020 Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2211 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
+```
       Round 1 - Avg Train Loss: 0.7237
       Round 1 - Avg Train Acc: 0.9002 - Time: 8.96s
       Round 2 - Avg Train Loss: 0.7387
@@ -1039,6 +1103,7 @@ I0000 00:00:1765916573.415830  977181 gpu_device.cc:2020] Created device /job:lo
       Round 20 - Avg Train Loss: 0.7392
       Round 20 - Avg Train Acc: 0.9531 - Time: 4.27s
    ✓ Model weights updated from FedProx training
+   ```
 
 FedProx federated learning completed in 86.39s
    Captured 20 rounds of training metrics
@@ -1049,6 +1114,7 @@ Melatih Model CNN Binary...
 [INFO] Starting Flower FedProx federated learning for cnn_binary...
    Clients: 5 | Rounds: 20 | Local epochs: 1
    Proximal term (μ): 0.001
+   ```
       Round 1 - Avg Train Loss: 0.7310
       Round 1 - Avg Train Acc: 0.8849 - Time: 15.80s
       Round 2 - Avg Train Loss: 0.7381
@@ -1090,6 +1156,7 @@ Melatih Model CNN Binary...
       Round 20 - Avg Train Loss: 0.7375
       Round 20 - Avg Train Acc: 0.9672 - Time: 8.32s
    ✓ Model weights updated from FedProx training
+   ```
 
 FedProx federated learning completed in 185.18s
    Captured 20 rounds of training metrics
@@ -1102,6 +1169,7 @@ Melatih Model MLP Multi-class...
 [INFO] Starting Flower FedProx federated learning for mlp_multi...
    Clients: 5 | Rounds: 20 | Local epochs: 1
    Proximal term (μ): 0.001
+   ```
       Round 1 - Avg Train Loss: 0.1000
       Round 1 - Avg Train Acc: 0.5632 - Time: 11.84s
       Round 2 - Avg Train Loss: 0.1000
@@ -1143,6 +1211,7 @@ Melatih Model MLP Multi-class...
       Round 20 - Avg Train Loss: 0.1000
       Round 20 - Avg Train Acc: 0.7234 - Time: 6.16s
    ✓ Model weights updated from FedProx training
+   ```
 
 FedProx federated learning completed in 118.68s
    Captured 20 rounds of training metrics
@@ -1153,6 +1222,7 @@ FedProx federated learning completed in 118.68s
 [INFO] Starting Flower FedProx federated learning for cnn_multi...
    Clients: 5 | Rounds: 20 | Local epochs: 1
    Proximal term (μ): 0.001
+   ```
       Round 1 - Avg Train Loss: 0.1000
       Round 1 - Avg Train Acc: 0.5385 - Time: 20.39s
       Round 2 - Avg Train Loss: 0.1000
@@ -1194,6 +1264,7 @@ FedProx federated learning completed in 118.68s
       Round 20 - Avg Train Loss: 0.1000
       Round 20 - Avg Train Acc: 0.7798 - Time: 15.04s
    ✓ Model weights updated from FedProx training
+   ```
 
 FedProx federated learning completed in 330.25s
    Captured 20 rounds of training metrics
@@ -1201,29 +1272,25 @@ FedProx federated learning completed in 330.25s
 
 Semua model berhasil dilatih dengan FedProx!
 
-#### Model Evaluasi
-
-2025-12-17 03:34:55.019835: I external/local_xla/xla/service/service.cc:163] XLA service 0x7efca4003e00 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
-2025-12-17 03:34:55.019850: I external/local_xla/xla/service/service.cc:171]   StreamExecutor device (0): NVIDIA GeForce GTX 1650 SUPER, Compute Capability 7.5
-2025-12-17 03:34:55.024002: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+##### Evaluation Result
 
 EVALUASI SEMUA MODEL
 
 --- EVALUASI MODEL BINARY ---
 
 [1/4] MLP Binary...
-2025-12-17 03:34:55.058105: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:473] Loaded cuDNN version 91600
-I0000 00:00:1765917295.335485  977327 device_compiler.h:196] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
 
-EVALUATION METRICS - MLP Binary (FedProx):
+📊 EVALUATION METRICS - MLP Binary (FedProx):
+```
+Accuracy:  0.9569
+Precision: 0.9487
+Recall:    0.9974
+F1 Score:  0.9725
+AUC-ROC:   0.9931
+```
 
-- Accuracy: 0.9569
-- Precision: 0.9487
-- Recall: 0.9974
-- F1 Score: 0.9725
-- AUC-ROC: 0.9931
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.99      0.83      0.90     10000
@@ -1232,18 +1299,21 @@ CLASSIFICATION REPORT:
     accuracy                           0.96     42209
    macro avg       0.97      0.91      0.94     42209
 weighted avg       0.96      0.96      0.96     42209
+```
 
 [2/4] CNN Binary...
 
-EVALUATION METRICS - CNN Binary (FedProx):
+📊 EVALUATION METRICS - CNN Binary (FedProx):
+```
+Accuracy:  0.9660
+Precision: 0.9918
+Recall:    0.9634
+F1 Score:  0.9774
+AUC-ROC:   0.9962
+```
 
-- Accuracy: 0.9660
-- Precision: 0.9918
-- Recall: 0.9634
-- F1 Score: 0.9774
-- AUC-ROC: 0.9962
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.89      0.97      0.93     10000
@@ -1252,20 +1322,23 @@ CLASSIFICATION REPORT:
     accuracy                           0.97     42209
    macro avg       0.94      0.97      0.95     42209
 weighted avg       0.97      0.97      0.97     42209
+```
 
 --- EVALUASI MODEL MULTI-CLASS ---
 
 [3/4] MLP Multi-class...
 
-EVALUATION METRICS - MLP Multi (FedProx):
+📊 EVALUATION METRICS - MLP Multi (FedProx):
+```
+Accuracy:  0.7036
+Precision: 0.7389
+Recall:    0.7036
+F1 Score:  0.6815
+AUC-ROC:   0.9745
+```
 
-- Accuracy: 0.7036
-- Precision: 0.7389
-- Recall: 0.7036
-- F1 Score: 0.6815
-- AUC-ROC: 0.9745
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.45      0.99      0.62      4000
@@ -1282,18 +1355,21 @@ CLASSIFICATION REPORT:
     accuracy                           0.70     42209
    macro avg       0.73      0.62      0.59     42209
 weighted avg       0.74      0.70      0.68     42209
+```
 
 [4/4] CNN Multi-class...
 
-EVALUATION METRICS - CNN Multi (FedProx):
+📊 EVALUATION METRICS - CNN Multi (FedProx):
+```
+Accuracy:  0.7861
+Precision: 0.8192
+Recall:    0.7861
+F1 Score:  0.7802
+AUC-ROC:   0.9817
+```
 
-- Accuracy: 0.7861
-- Precision: 0.8192
-- Recall: 0.7861
-- F1 Score: 0.7802
-- AUC-ROC: 0.9817
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.46      1.00      0.63      4000
@@ -1310,12 +1386,13 @@ CLASSIFICATION REPORT:
     accuracy                           0.79     42209
    macro avg       0.76      0.69      0.69     42209
 weighted avg       0.82      0.79      0.78     42209
+```
 
 ---
 
 ### Non IID
 
-#### 1. Batchsize 512 Epochs 1 Learning Rate 0.0005 Alpha Dirichlet 0.3 Mu 0.01
+#### 1. Batch Size: 512 | Epochs: 1 | Learning Rate: 0.0005 | Alpha Dirichlet: 0.3 | Mu: 0.01
 
 #### Round Result
 
@@ -1330,7 +1407,7 @@ Melatih Model MLP Binary...
    Clients: 5 | Rounds: 20 | Local epochs: 1
    Proximal term (μ): 0.01
 
-I0000 00:00:1765920096.496809 1096747 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2217 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
+I0000 00:00:1765920096.496809 1096747 gpu_device.cc:2020 Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2217 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
 
       Round 1 - Avg Train Loss: 0.5834
       Round 1 - Avg Train Acc: 0.7300 - Time: 9.10s
@@ -1540,27 +1617,21 @@ Semua model berhasil dilatih dengan FedProx!
 
 #### Evaluation Result
 
-2025-12-17 04:33:28.992246: I external/local_xla/xla/service/service.cc:163] XLA service 0x7f462001bfb0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
-2025-12-17 04:33:28.992259: I external/local_xla/xla/service/service.cc:171]   StreamExecutor device (0): NVIDIA GeForce GTX 1650 SUPER, Compute Capability 7.5
-2025-12-17 04:33:28.996361: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
-
-EVALUASI SEMUA MODEL
-
---- EVALUASI MODEL BINARY ---
+##### Evaluation Result
 
 [1/4] MLP Binary...
-2025-12-17 04:33:29.029315: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:473] Loaded cuDNN version 91600
-I0000 00:00:1765920809.289537 1096826 device_compiler.h:196] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
 
-EVALUATION METRICS - MLP Binary (FedProx):
+📊 EVALUATION METRICS - MLP Binary (FedProx):
+```
+Accuracy:  0.9561
+Precision: 0.9474
+Recall:    0.9978
+F1 Score:  0.9720
+AUC-ROC:   0.9934
+```
 
-- Accuracy: 0.9561
-- Precision: 0.9474
-- Recall: 0.9978
-- F1 Score: 0.9720
-- AUC-ROC: 0.9934
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.99      0.82      0.90     10000
@@ -1569,18 +1640,21 @@ CLASSIFICATION REPORT:
     accuracy                           0.96     42209
    macro avg       0.97      0.91      0.94     42209
 weighted avg       0.96      0.96      0.95     42209
+```
 
 [2/4] CNN Binary...
 
-EVALUATION METRICS - CNN Binary (FedProx):
+📊 EVALUATION METRICS - CNN Binary (FedProx):
+```
+Accuracy:  0.9574
+Precision: 0.9486
+Recall:    0.9982
+F1 Score:  0.9728
+AUC-ROC:   0.9960
+```
 
-- Accuracy: 0.9574
-- Precision: 0.9486
-- Recall: 0.9982
-- F1 Score: 0.9728
-- AUC-ROC: 0.9960
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.99      0.83      0.90     10000
@@ -1589,20 +1663,23 @@ CLASSIFICATION REPORT:
     accuracy                           0.96     42209
    macro avg       0.97      0.91      0.94     42209
 weighted avg       0.96      0.96      0.96     42209
+```
 
 --- EVALUASI MODEL MULTI-CLASS ---
 
 [3/4] MLP Multi-class...
 
-EVALUATION METRICS - MLP Multi (FedProx):
+📊 EVALUATION METRICS - MLP Multi (FedProx):
+```
+Accuracy:  0.6976
+Precision: 0.7353
+Recall:    0.6976
+F1 Score:  0.6710
+AUC-ROC:   0.9614
+```
 
-- Accuracy: 0.6976
-- Precision: 0.7353
-- Recall: 0.6976
-- F1 Score: 0.6710
-- AUC-ROC: 0.9614
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.48      0.99      0.65      4000
@@ -1619,18 +1696,21 @@ CLASSIFICATION REPORT:
     accuracy                           0.70     42209
    macro avg       0.63      0.61      0.57     42209
 weighted avg       0.74      0.70      0.67     42209
+```
 
 [4/4] CNN Multi-class...
 
-EVALUATION METRICS - CNN Multi (FedProx):
+📊 EVALUATION METRICS - CNN Multi (FedProx):
+```
+Accuracy:  0.7304
+Precision: 0.7724
+Recall:    0.7304
+F1 Score:  0.7143
+AUC-ROC:   0.9734
+```
 
-- Accuracy: 0.7304
-- Precision: 0.7724
-- Recall: 0.7304
-- F1 Score: 0.7143
-- AUC-ROC: 0.9734
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.48      1.00      0.65      4000
@@ -1647,10 +1727,11 @@ CLASSIFICATION REPORT:
     accuracy                           0.73     42209
    macro avg       0.70      0.66      0.64     42209
 weighted avg       0.77      0.73      0.71     42209
+```
 
 ---
 
-#### 2. Batchsize 512 Epochs 1 Learning Rate 0.0005 Alpha Dirichlet 0.3 Mu 0.001
+#### 2. Batch Size: 512 | Epochs: 1 | Learning Rate: 0.0005 | Alpha Dirichlet: 0.3 | Mu: 0.001
 
 #### Round Result
 
@@ -1665,7 +1746,7 @@ Melatih Model MLP Binary...
    Clients: 5 | Rounds: 20 | Local epochs: 1
    Proximal term (μ): 0.001
 
-I0000 00:00:1765918331.798499 1047538 gpu_device.cc:2020] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2232 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
+I0000 00:00:1765918331.798499 1047538 gpu_device.cc:2020 Created device /job:localhost/replica:0/task:0/device:GPU:0 with 2232 MB memory:  -> device: 0, name: NVIDIA GeForce GTX 1650 SUPER, pci bus id: 0000:07:00.0, compute capability: 7.5
 
       Round 1 - Avg Train Loss: 0.6526
       Round 1 - Avg Train Acc: 0.8408 - Time: 9.29s
@@ -1873,27 +1954,19 @@ Semua model berhasil dilatih dengan FedProx!
 
 #### Evaluation Result
 
-2025-12-17 04:03:59.893671: I external/local_xla/xla/service/service.cc:163] XLA service 0x7fce440016d0 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
-2025-12-17 04:03:59.893685: I external/local_xla/xla/service/service.cc:171]   StreamExecutor device (0): NVIDIA GeForce GTX 1650 SUPER, Compute Capability 7.5
-2025-12-17 04:03:59.897871: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:269] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
-
-EVALUASI SEMUA MODEL
-
---- EVALUASI MODEL BINARY ---
-
 [1/4] MLP Binary...
-2025-12-17 04:03:59.931021: I external/local_xla/xla/stream_executor/cuda/cuda_dnn.cc:473] Loaded cuDNN version 91600
-I0000 00:00:1765919040.192349 1047726 device_compiler.h:196] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
 
-EVALUATION METRICS - MLP Binary (FedProx):
+📊 EVALUATION METRICS - MLP Binary (FedProx):
+```
+Accuracy:  0.9562
+Precision: 0.9474
+Recall:    0.9980
+F1 Score:  0.9720
+AUC-ROC:   0.9932
+```
 
-- Accuracy: 0.9562
-- Precision: 0.9474
-- Recall: 0.9980
-- F1 Score: 0.9720
-- AUC-ROC: 0.9932
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.99      0.82      0.90     10000
@@ -1902,18 +1975,21 @@ CLASSIFICATION REPORT:
     accuracy                           0.96     42209
    macro avg       0.97      0.91      0.94     42209
 weighted avg       0.96      0.96      0.95     42209
+```
 
 [2/4] CNN Binary...
 
-EVALUATION METRICS - CNN Binary (FedProx):
+📊 EVALUATION METRICS - CNN Binary (FedProx):
+```
+Accuracy:  0.9578
+Precision: 0.9491
+Recall:    0.9983
+F1 Score:  0.9731
+AUC-ROC:   0.9959
+```
 
-- Accuracy: 0.9578
-- Precision: 0.9491
-- Recall: 0.9983
-- F1 Score: 0.9731
-- AUC-ROC: 0.9959
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
       Normal       0.99      0.83      0.90     10000
@@ -1922,20 +1998,23 @@ CLASSIFICATION REPORT:
     accuracy                           0.96     42209
    macro avg       0.97      0.91      0.94     42209
 weighted avg       0.96      0.96      0.96     42209
+```
 
 --- EVALUASI MODEL MULTI-CLASS ---
 
 [3/4] MLP Multi-class...
 
-EVALUATION METRICS - MLP Multi (FedProx):
+📊 EVALUATION METRICS - MLP Multi (FedProx):
+```
+Accuracy:  0.6686
+Precision: 0.6868
+Recall:    0.6686
+F1 Score:  0.6317
+AUC-ROC:   0.9578
+```
 
-- Accuracy: 0.6686
-- Precision: 0.6868
-- Recall: 0.6686
-- F1 Score: 0.6317
-- AUC-ROC: 0.9578
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.00      0.00      0.00      4000
@@ -1952,18 +2031,21 @@ CLASSIFICATION REPORT:
     accuracy                           0.67     42209
    macro avg       0.64      0.58      0.53     42209
 weighted avg       0.69      0.67      0.63     42209
+```
 
 [4/4] CNN Multi-class...
 
-EVALUATION METRICS - CNN Multi (FedProx):
+📊 EVALUATION METRICS - CNN Multi (FedProx):
+```
+Accuracy:  0.6937
+Precision: 0.7924
+Recall:    0.6937
+F1 Score:  0.6547
+AUC-ROC:   0.9760
+```
 
-- Accuracy: 0.6937
-- Precision: 0.7924
-- Recall: 0.6937
-- F1 Score: 0.6547
-- AUC-ROC: 0.9760
-
-CLASSIFICATION REPORT:
+📋 CLASSIFICATION REPORT:
+```
               precision    recall  f1-score   support
 
     backdoor       0.87      0.01      0.01      4000
@@ -1980,5 +2062,6 @@ CLASSIFICATION REPORT:
     accuracy                           0.69     42209
    macro avg       0.73      0.63      0.59     42209
 weighted avg       0.79      0.69      0.65     42209
+```
 
 ---
