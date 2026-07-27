@@ -23,18 +23,46 @@ class ProximalModel(Model):
     deviation from the global model weights, which helps with convergence
     in heterogeneous federated learning scenarios.
     
+    The proximal term is: (mu/2) * ||w_local - w_global||²
+    Applied ONLY to trainable weights (excluding BatchNorm moving stats).
+    
     Args:
         model_base: Base Keras model architecture
-        global_weights_initial: Initial weights from global model
+        global_weights_initial: Initial weights from global model (all weights from get_weights())
         mu: Proximal term coefficient (default: 0.01)
     """
     
     def __init__(self, model_base, global_weights_initial, mu=0.01):
         super(ProximalModel, self).__init__()
         self.model = model_base
-        self.global_weights = [tf.convert_to_tensor(w, dtype=tf.float32) 
-                               for w in global_weights_initial]
         self.mu = mu
+        
+        # CRITICAL FIX: Extract only trainable weights from global_weights_initial.
+        # model.get_weights() returns ALL weights (trainable + non-trainable like BN stats).
+        # model.trainable_weights returns ONLY trainable weights.
+        # We must match them correctly to avoid shape mismatch.
+        self.global_trainable_weights = self._extract_trainable_weights(
+            model_base, global_weights_initial
+        )
+
+    def _extract_trainable_weights(self, model, all_weights):
+        """Extract only trainable weight values from a full get_weights() list.
+        
+        Maps trainable variable names to their indices in the full weight list,
+        ensuring correct alignment even with BatchNormalization layers.
+        """
+        # Build a mapping: variable name -> index in get_weights() output
+        all_vars = model.weights  # All variables (trainable + non-trainable)
+        trainable_names = {v.name for v in model.trainable_weights}
+        
+        trainable_values = []
+        for i, var in enumerate(all_vars):
+            if var.name in trainable_names and i < len(all_weights):
+                trainable_values.append(
+                    tf.convert_to_tensor(all_weights[i], dtype=tf.float32)
+                )
+        
+        return trainable_values
 
     def call(self, inputs):
         return self.model(inputs)
@@ -43,6 +71,7 @@ class ProximalModel(Model):
         """Custom train step with FedProx proximal term.
         
         Adds (mu/2)||w - w_global||² to the loss function.
+        Only trainable weights are penalized (not BN moving_mean/variance).
         """
         x, y = data
         
@@ -54,10 +83,8 @@ class ProximalModel(Model):
             
             # Compute proximal term: (mu/2) * ||w - w_global||²
             proximal_term = 0.0
-            for local_w, global_w in zip(self.model.trainable_weights, self.global_weights):
-                # Ensure shapes match before computing difference
-                if local_w.shape == global_w.shape:
-                    proximal_term += tf.reduce_sum(tf.square(local_w - global_w))
+            for local_w, global_w in zip(self.model.trainable_weights, self.global_trainable_weights):
+                proximal_term += tf.reduce_sum(tf.square(local_w - global_w))
             
             # Total loss = local loss + (mu/2) * proximal_term
             total_loss = local_loss + (self.mu / 2.0) * proximal_term
