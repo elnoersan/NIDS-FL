@@ -42,11 +42,11 @@ verbose = 0
 
 # Model-specific configs (will be overridden during runtime)
 model-type = "mlp_binary"
-input-shape = 30
+input-shape = 45
 num-classes = 1
 
 [tool.flwr.federations]
 default = "local-simulation"
 
 [tool.flwr.federations.local-simulation]
-options.num-supernodes = 3
+options.num-supernodes = 5
