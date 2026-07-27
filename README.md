@@ -8,7 +8,9 @@ Research implementation of Network Intrusion Detection System for Smart City env
 ## Project Structure
 
 ### Data Analysis & Preprocessing (`EDA/`)
-- **Preprocessing Pipeline**: Automated data cleaning and feature engineering
+- **Preprocessing Pipeline**: Automated data cleaning and feature engineering (Updated to conform with `PREPROCESSING_IMPROVEMENTS.md`)
+  - Protocol-aware validation
+  - Security feature engineering (e.g., port categories, temporal properties, violation features like `weird_name`)
   - Binary classification (Normal vs Attack)
   - Multi-class classification (Attack type detection)
   - Time saving: ~5-10 minutes → <5 seconds with preprocessed artifacts
@@ -55,7 +57,7 @@ Research implementation of Network Intrusion Detection System for Smart City env
 
 ### Model Architectures
 - **MLP (Multi-Layer Perceptron)**:
-  - Input layer (30 features after preprocessing)
+  - Input layer (45 features after preprocessing)
   - Hidden layers with dropout for regularization
   - Binary output (sigmoid) or multi-class output (softmax)
 - **CNN (Convolutional Neural Network)**:
@@ -119,7 +121,7 @@ python run_gridsearch.py
 
 ## Dataset
 **TON-IoT Network Dataset**: IoT/IIoT network traffic with labeled attacks
-- Network features: 30 selected features after preprocessing
+- Network features: 45 selected features after preprocessing
 - Attack types: DDoS, DoS, Scanning, Backdoor, XSS, Password, Injection, Ransomware, MITM
 - Binary labels: Normal (0) vs Attack (1)
 - Multi-class labels: 9 attack categories + Normal
