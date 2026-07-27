@@ -22,7 +22,8 @@ def split_data_non_iid_label(
     X: np.ndarray, 
     y: np.ndarray, 
     n_clients: int = 3, 
-    alpha: float = 0.4
+    alpha: float = 0.4,
+    seed: int = None
 ) -> List[Tuple[np.ndarray, np.ndarray]]:
     """
     Split data for clients with Non-IID distribution using Dirichlet distribution.
@@ -37,12 +38,16 @@ def split_data_non_iid_label(
         Number of clients (partitions) desired.
     alpha : float, default=0.4
         Dirichlet concentration parameter. Smaller values → more non-uniform distribution.
+    seed : int, optional
+        Random seed for reproducibility. Essential for apple-to-apple comparisons.
 
     Returns
     -------
     List[Tuple[np.ndarray, np.ndarray]]
         Each element is (X_client, y_client) for one client, shuffled.
     """
+    if seed is not None:
+        np.random.seed(seed)
     print(f"\n[INFO] Splitting data for {n_clients} clients with Non-IID (alpha={alpha})...")
 
     # Ensure data is in numpy array format
@@ -89,8 +94,8 @@ def split_data_non_iid_label(
             random_indices = np.random.choice(len(X_np), 10, replace=False)
             X_client, y_client = X_np[random_indices], y_np[random_indices]
         else:
-            # Remove duplicate indices and get data
-            indices = list(set(client_indices[i]))
+            # Use indices directly (no dedup — set() silently drops samples)
+            indices = np.array(client_indices[i])
             X_client, y_client = X_np[indices], y_np[indices]
 
         # Shuffle client data locally
@@ -135,15 +140,16 @@ def split_data_non_iid_label(
                 })
 
             df_dist = pd.DataFrame(rows_summary)
-            # add TOTAL row
-            df_dist = df_dist.append({
+            # add TOTAL row (pd.concat replaces deprecated df.append)
+            total_row = pd.DataFrame([{
                 'Client': 'TOTAL',
                 'Total Samples': total_samples,
                 'Normal': total_label0,
                 'Normal %': '-',
                 'Attack': total_label1,
                 'Attack %': '-'
-            }, ignore_index=True)
+            }])
+            df_dist = pd.concat([df_dist, total_row], ignore_index=True)
 
             # Heterogeneity metrics
             attack_ratios = df_dist.loc[df_dist['Client'] != 'TOTAL', 'Attack %'] / 100.0
