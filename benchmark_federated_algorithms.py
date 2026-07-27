@@ -10,6 +10,9 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 tf.get_logger().setLevel('ERROR')
 
+# Global configuration (can be overridden by --quick flag)
+NUM_ROUNDS = 20
+
 def load_dataset(filepath):
     """Load dataset from pickle file."""
     if not os.path.exists(filepath):
@@ -210,7 +213,7 @@ def run_federated_scenario(X_train, y_train, X_test, y_test, num_clients, alpha,
     global_weights = global_model.get_weights()
     
     # Federated rounds
-    num_rounds = 20
+    num_rounds = NUM_ROUNDS
     batch_size = 512
     local_epochs = 1
     
@@ -281,6 +284,11 @@ def run_federated_scenario(X_train, y_train, X_test, y_test, num_clients, alpha,
     }
 
 def main():
+    import argparse
+    parser = argparse.ArgumentParser(description='NIDS-FL Thesis Benchmark')
+    parser.add_argument('--quick', action='store_true', help='Quick mode: 3 rounds, binary MLP only')
+    args = parser.parse_args()
+
     results = []
     
     binary_path = 'EDA/processed_artifacts/binary_preprocessed.pkl'
@@ -288,11 +296,17 @@ def main():
     
     datasets = {
         'binary': load_dataset(binary_path),
-        'multiclass': load_dataset(multiclass_path)
     }
+    if not args.quick:
+        datasets['multiclass'] = load_dataset(multiclass_path)
     
     alphas = [0.3, 5.0]
-    models = ['mlp', 'cnn']
+    models = ['mlp'] if args.quick else ['mlp', 'cnn']
+    
+    # Override rounds globally for quick mode
+    if args.quick:
+        global NUM_ROUNDS
+        NUM_ROUNDS = 3
     
     for task, data in datasets.items():
         if data is None:
@@ -334,3 +348,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+
