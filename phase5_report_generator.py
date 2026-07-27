@@ -75,45 +75,38 @@ def generate_report(eda_path, benchmark_path, output_path):
     # Helper to extract benchmark info
     # ---------------------------------------------------------
     def get_benchmark_modeling_section():
-        if not benchmark_data:
-            return "[Data Benchmark tidak ditemukan.]\n"
-        
-        configs = benchmark_data.get("configurations", {})
-        fl_params = configs.get("fl_params", {})
-        nn_params = configs.get("nn_params", {})
-        
         section = "### Federated Learning Configuration\n"
-        fl_rows = [[k, v] for k, v in fl_params.items()]
+        fl_rows = [
+            ["Clients", "5 (Residensial, Transportasi, Kesehatan, Industri, Pemerintahan)"],
+            ["Communication Rounds", "20 (or 3 in Quick Mode)"],
+            ["Local Epochs", "1"],
+            ["Batch Size", "512"],
+            ["Learning Rate", "0.0005"],
+            ["Optimizer", "Adam"],
+            ["Loss Function", "Binary/Sparse Categorical Crossentropy"]
+        ]
         section += format_table(["Parameter", "Value"], fl_rows) + "\n\n"
-        
-        section += "### Hyperparameter Configuration\n"
-        nn_rows = [[k, v] for k, v in nn_params.items()]
-        section += format_table(["Hyperparameter", "Value"], nn_rows) + "\n\n"
         
         section += "### Model Architectures\n"
         section += "- **MLP**: Multi-Layer Perceptron digunakan sebagai baseline.\n"
         section += "- **CNN-1D**: Convolutional Neural Network 1D digunakan untuk mengekstraksi pola sekuensial dari data jaringan.\n\n"
         
         section += "### Non-IID Simulation\n"
-        section += "- **Method**: Dirichlet Distribution untuk membagi dataset ke setiap client secara Non-IID.\n"
+        section += "- **Method**: Dirichlet Distribution (α=0.3 untuk Non-IID ekstrim, α=5.0 untuk distribusi menyerupai IID).\n"
         
         return section
 
     def get_benchmark_evaluation_section():
-        if not benchmark_data:
-            return "[Data Benchmark tidak ditemukan.]\n"
-            
-        results = benchmark_data.get("results", [])
-        if not results:
-            return "[Hasil evaluasi kosong.]\n"
+        if not benchmark_data or not isinstance(benchmark_data, list):
+            return "[Data Benchmark tidak ditemukan atau format tidak sesuai.]\n"
             
         section = ""
         
         # Grouping strategy
         grouped_results = {}
-        for res in results:
-            task = res.get("task", "unknown")
-            alpha = res.get("alpha", "unknown")
+        for res in benchmark_data:
+            task = res.get("Task", "unknown")
+            alpha = res.get("Alpha", "unknown")
             key = f"Task: {task} | Alpha: {alpha}"
             if key not in grouped_results:
                 grouped_results[key] = []
@@ -121,21 +114,20 @@ def generate_report(eda_path, benchmark_path, output_path):
             
         for group_name, group_data in grouped_results.items():
             section += f"### {group_name}\n"
-            headers = ["Model", "Algorithm", "Accuracy", "Precision", "Recall", "F1", "AUC", "WS", "Time (s)"]
+            headers = ["Model", "Strategy", "Accuracy", "Precision", "Recall", "F1", "AUC", "WS", "Time (s)"]
             rows = []
             for item in group_data:
-                model = item.get("model", "N/A")
-                algo = item.get("algorithm", "N/A")
-                metrics = item.get("metrics", {})
-                acc = f"{metrics.get('accuracy', 0.0):.4f}"
-                prec = f"{metrics.get('precision', 0.0):.4f}"
-                rec = f"{metrics.get('recall', 0.0):.4f}"
-                f1 = f"{metrics.get('f1', 0.0):.4f}"
-                auc = f"{metrics.get('auc', 0.0):.4f}" if metrics.get('auc') is not None else "N/A"
-                ws = f"{metrics.get('wasserstein_distance', 0.0):.4f}"
-                time_val = f"{metrics.get('training_time', 0.0):.2f}"
+                model = item.get("Model", "N/A")
+                strategy = item.get("Strategy", "N/A")
+                acc = f"{item.get('Acc', 0.0):.4f}"
+                prec = f"{item.get('Prec', 0.0):.4f}"
+                rec = f"{item.get('Rec', 0.0):.4f}"
+                f1 = f"{item.get('F1', 0.0):.4f}"
+                auc = f"{item.get('AUC', 0.0):.4f}"
+                ws = f"{item.get('WS', 0.0):.4f}"
+                time_val = f"{item.get('Duration_s', 0.0):.2f}"
                 
-                rows.append([model, algo, acc, prec, rec, f1, auc, ws, time_val])
+                rows.append([model, strategy, acc, prec, rec, f1, auc, ws, time_val])
                 
             section += format_table(headers, rows) + "\n\n"
             

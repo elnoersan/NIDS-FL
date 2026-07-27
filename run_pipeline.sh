@@ -19,6 +19,10 @@
 
 set -euo pipefail
 
+# Force CPU mode for TensorFlow to suppress CUDA errors on systems without proper drivers
+export CUDA_VISIBLE_DEVICES="-1"
+export TF_CPP_MIN_LOG_LEVEL="3"
+
 # ─── Configuration ────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VENV_PYTHON="${SCRIPT_DIR}/../Paper/.venv/bin/python"
