@@ -42,7 +42,7 @@ def main(grid: Grid, context: Context) -> None:
     
     # Define and start FedAvg strategy
     strategy = FedAvg(
-        fraction_train=fraction_train,
+        fraction_fit=fraction_train,
         fraction_evaluate=fraction_evaluate,
         min_fit_clients=min_fit_clients,
         min_evaluate_clients=min_evaluate_clients,
