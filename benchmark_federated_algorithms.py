@@ -14,6 +14,8 @@ from torch.utils.data import TensorDataset, DataLoader
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 
 # Hardware-Aware Settings
+# Disable cuDNN to avoid CUDNN_STATUS_SUBLIBRARY_VERSION_MISMATCH with TF libs
+torch.backends.cudnn.enabled = False
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f"Using device: {device}")
 

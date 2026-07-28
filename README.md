@@ -1,7 +1,8 @@
 # Network Intrusion Detection System using Federated Learning (NIDS-FL)
 
 **Research Title**: Detection and Classification of Smart City Network Attacks Using Federated Learning on Network Traffic  
-**Author**: Rian Nur Ikhsan (22523297)
+**Author**: Rian Nur Ikhsan (22523297)  
+**Full Thesis Document**: [Download PDF](https://dspace.uii.ac.id/bitstream/handle/123456789/63052/22523297.pdf?sequence=1&isAllowed=y)
 
 ## Overview
 This repository contains the full CRISP-DM implementation for the thesis research on Federated Learning (FL) applied to Smart City Intrusion Detection Systems (NIDS) using the TON-IoT dataset.
