@@ -192,7 +192,7 @@ if __name__ == "__main__":
     # Paths based on project structure
     base_dir = os.path.dirname(os.path.abspath(__file__))
     eda_path = os.path.join(base_dir, "EDA", "data_understanding_report.json")
-    benchmark_path = os.path.join(base_dir, "thesis_benchmark_results.json")
+    benchmark_path = os.path.join(base_dir, "thesis_benchmark_results_pytorch.json")
     
     output_path = os.path.join(base_dir, args.output) if not os.path.isabs(args.output) else args.output
     

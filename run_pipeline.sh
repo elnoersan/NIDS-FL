@@ -262,7 +262,7 @@ echo "  Total Execution Time : $TOTAL_TIME"
 echo ""
 echo "  Generated Artifacts:"
 echo "  ├── $REPORT_FILE"
-echo "  ├── thesis_benchmark_results.json"
+echo "  ├── thesis_benchmark_results_pytorch.json"
 
 if [ -f "${SCRIPT_DIR}/EDA/data_understanding_report.json" ]; then
 echo "  ├── EDA/data_understanding_report.json"

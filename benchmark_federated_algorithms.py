@@ -2,13 +2,20 @@ import os
 import time
 import json
 import pickle
+import copy
+import gc
 import numpy as np
-import tensorflow as tf
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import TensorDataset, DataLoader
+
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, roc_auc_score
 
 # Hardware-Aware Settings
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-tf.get_logger().setLevel('ERROR')
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(f"Using device: {device}")
 
 # Global configuration (can be overridden by --quick flag)
 NUM_ROUNDS = 20
@@ -55,113 +62,62 @@ def partition_dirichlet(X, y, num_clients, alpha, seed=42):
         
     return client_datasets
 
-def get_model(model_type, task, input_shape, num_classes=None):
-    """Model Factory for MLP and CNN, Binary and Multiclass."""
-    from tensorflow.keras.layers import Dense, Dropout, BatchNormalization, Conv1D, MaxPooling1D, Flatten, Input
-    from tensorflow.keras.regularizers import l2
-    
-    model = tf.keras.Sequential()
-    model.add(Input(shape=input_shape))
-    
-    if model_type == 'mlp':
-        if task == 'binary':
-            model.add(Dense(256, activation='relu', kernel_regularizer=l2(1e-4)))
-            model.add(BatchNormalization())
-            model.add(Dropout(0.3))
-            model.add(Dense(128, activation='relu', kernel_regularizer=l2(1e-4)))
-            model.add(Dropout(0.3))
-            model.add(Dense(64, activation='relu'))
-            model.add(Dropout(0.2))
-            model.add(Dense(1, activation='sigmoid'))
-        else: # multiclass
-            model.add(Dense(512, activation='relu', kernel_regularizer=l2(1e-4)))
-            model.add(BatchNormalization())
-            model.add(Dropout(0.4))
-            model.add(Dense(256, activation='relu', kernel_regularizer=l2(1e-4)))
-            model.add(Dropout(0.4))
-            model.add(Dense(128, activation='relu'))
-            model.add(Dropout(0.3))
-            model.add(Dense(num_classes, activation='softmax'))
-            
-    elif model_type == 'cnn':
-        if task == 'binary':
-            model.add(Conv1D(64, 3, padding='same', activation='relu'))
-            model.add(BatchNormalization())
-            model.add(MaxPooling1D(2))
-            model.add(Conv1D(32, 3, padding='same', activation='relu'))
-            model.add(BatchNormalization())
-            model.add(MaxPooling1D(2))
-            model.add(Flatten())
-            model.add(Dense(128, activation='relu'))
-            model.add(Dropout(0.4))
-            model.add(Dense(1, activation='sigmoid'))
-        else: # multiclass
-            model.add(Conv1D(128, 3, padding='same', activation='relu'))
-            model.add(BatchNormalization())
-            model.add(MaxPooling1D(2))
-            model.add(Conv1D(64, 3, padding='same', activation='relu'))
-            model.add(BatchNormalization())
-            model.add(MaxPooling1D(2))
-            model.add(Flatten())
-            model.add(Dense(128, activation='relu'))
-            model.add(Dropout(0.4))
-            model.add(Dense(num_classes, activation='softmax'))
-            
-    return model
+class MLP(nn.Module):
+    def __init__(self, input_features, num_classes, task='binary'):
+        super(MLP, self).__init__()
+        out_features = 1 if task == 'binary' else num_classes
+        self.net = nn.Sequential(
+            nn.Linear(input_features, 256),
+            nn.BatchNorm1d(256),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(256, 128),
+            nn.ReLU(),
+            nn.Dropout(0.3),
+            nn.Linear(128, 64),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(64, out_features)
+        )
 
-class ProximalModel(tf.keras.Model):
-    def __init__(self, model_base, global_weights_initial, mu=0.01):
-        super().__init__()
-        self.model = model_base
-        # CRITICAL: Store only trainable weights for proximal term
-        self.global_trainable_weights = [
-            tf.convert_to_tensor(w, dtype=tf.float32) 
-            for w in self._extract_trainable_weights(model_base, global_weights_initial)
-        ]
-        self.mu = mu
-    
-    def _extract_trainable_weights(self, model, all_weights):
-        """Extract only the weights that correspond to trainable variables."""
-        trainable_indices = []
-        all_weight_shapes = [w.shape for w in model.get_weights()]
-        trainable_shapes = [(v.name, v.shape) for v in model.trainable_weights]
-        
-        idx = 0
-        for name, shape in trainable_shapes:
-            while idx < len(all_weight_shapes):
-                if all_weight_shapes[idx] == shape:
-                    trainable_indices.append(idx)
-                    idx += 1
-                    break
-                idx += 1
-        
-        return [all_weights[i] for i in trainable_indices]
-    
-    def call(self, inputs):
-        return self.model(inputs)
-    
-    def train_step(self, data):
-        x, y = data
-        with tf.GradientTape() as tape:
-            y_pred = self.model(x, training=True)
-            local_loss = self.compiled_loss(y, y_pred, regularization_losses=self.model.losses)
-            proximal_term = 0.0
-            for local_w, global_w in zip(self.model.trainable_weights, self.global_trainable_weights):
-                proximal_term += tf.reduce_sum(tf.square(local_w - global_w))
-            total_loss = local_loss + (self.mu / 2.0) * proximal_term
-        gradients = tape.gradient(total_loss, self.model.trainable_weights)
-        self.optimizer.apply_gradients(zip(gradients, self.model.trainable_weights))
-        self.compiled_metrics.update_state(y, y_pred)
-        return {m.name: m.result() for m in self.metrics}
+    def forward(self, x):
+        return self.net(x)
 
-def compile_model(model, task):
-    optimizer = tf.keras.optimizers.Adam(learning_rate=0.0005)
-    if task == 'binary':
-        loss = 'binary_crossentropy'
-    else:
-        loss = 'sparse_categorical_crossentropy'
-    model.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
-    return model
+class CNN1D(nn.Module):
+    def __init__(self, input_features, num_classes, task='binary'):
+        super(CNN1D, self).__init__()
+        out_features = 1 if task == 'binary' else num_classes
+        
+        self.features = nn.Sequential(
+            nn.Conv1d(1, 64, kernel_size=3, padding=1),
+            nn.BatchNorm1d(64),
+            nn.ReLU(),
+            nn.MaxPool1d(2),
+            nn.Conv1d(64, 32, kernel_size=3, padding=1),
+            nn.BatchNorm1d(32),
+            nn.ReLU(),
+            nn.MaxPool1d(2)
+        )
+        
+        # dummy pass to get flattened shape dynamically
+        dummy = torch.zeros(1, 1, input_features)
+        dummy_out = self.features(dummy)
+        flat_size = dummy_out.view(1, -1).size(1)
+        
+        self.classifier = nn.Sequential(
+            nn.Flatten(),
+            nn.Linear(flat_size, 128),
+            nn.ReLU(),
+            nn.Dropout(0.4),
+            nn.Linear(128, out_features)
+        )
+
+    def forward(self, x):
+        # x shape: (N, features)
+        x = x.unsqueeze(1) # (N, 1, features)
+        x = self.features(x)
+        x = self.classifier(x)
+        return x
 
 def calculate_metrics(y_true, y_pred_prob, task):
     if task == 'binary':
@@ -188,86 +144,150 @@ def calculate_metrics(y_true, y_pred_prob, task):
     ws = 0.20 * acc + 0.20 * prec + 0.20 * rec + 0.20 * f1 + 0.20 * auc
     return acc, prec, rec, f1, auc, ws
 
+def train_client(model, global_model, train_loader, task, strategy, mu, epochs=1):
+    model.train()
+    optimizer = optim.Adam(model.parameters(), lr=0.0005, weight_decay=1e-4)
+    criterion = nn.BCEWithLogitsLoss() if task == 'binary' else nn.CrossEntropyLoss()
+    
+    if global_model is not None:
+        global_model.eval()
+        
+    for ep in range(epochs):
+        for x_batch, y_batch in train_loader:
+            x_batch = x_batch.to(device)
+            y_batch = y_batch.to(device)
+            
+            optimizer.zero_grad()
+            outputs = model(x_batch)
+            
+            if task == 'binary':
+                outputs = outputs.view(-1)
+                loss = criterion(outputs, y_batch.view(-1).float())
+            else:
+                loss = criterion(outputs, y_batch.long())
+                
+            if strategy.startswith('FedProx') and global_model is not None:
+                proximal_term = 0.0
+                for w, w_t in zip(model.parameters(), global_model.parameters()):
+                    proximal_term += (w - w_t).norm(2) ** 2
+                loss += (mu / 2) * proximal_term
+                
+            loss.backward()
+            optimizer.step()
+
+def evaluate_model(model, loader, task):
+    model.eval()
+    y_true = []
+    y_pred_prob = []
+    criterion = nn.BCEWithLogitsLoss() if task == 'binary' else nn.CrossEntropyLoss()
+    total_loss = 0.0
+    
+    with torch.no_grad():
+        for x_batch, y_batch in loader:
+            x_batch = x_batch.to(device)
+            y_batch = y_batch.to(device)
+            
+            outputs = model(x_batch)
+            
+            if task == 'binary':
+                outputs = outputs.view(-1)
+                loss = criterion(outputs, y_batch.view(-1).float())
+                probs = torch.sigmoid(outputs)
+                y_pred_prob.extend(probs.cpu().numpy())
+            else:
+                loss = criterion(outputs, y_batch.long())
+                probs = torch.softmax(outputs, dim=1)
+                y_pred_prob.extend(probs.cpu().numpy())
+                
+            total_loss += loss.item() * x_batch.size(0)
+            y_true.extend(y_batch.cpu().numpy())
+            
+    avg_loss = total_loss / len(y_true)
+    y_true = np.array(y_true)
+    y_pred_prob = np.array(y_pred_prob)
+    
+    if task == 'binary':
+        y_true = y_true.reshape(-1)
+        
+    acc, prec, rec, f1, auc, ws = calculate_metrics(y_true, y_pred_prob, task)
+    return avg_loss, acc, prec, rec, f1, auc, ws, y_pred_prob
+
 def run_federated_scenario(X_train, y_train, X_test, y_test, num_clients, alpha, model_type, task, strategy, mu=None, seed=42):
     print(f"\n--- Running {task.upper()} | {model_type.upper()} | {strategy} | Alpha: {alpha} ---")
     start_time = time.time()
     
-    # 1. Partition Data
+    # Partition Data
     client_datasets = partition_dirichlet(X_train, y_train, num_clients, alpha, seed)
     
-    # 2. Reshape for CNN if needed
-    if model_type == 'cnn':
-        input_shape = (X_train.shape[1], 1)
-        X_test_run = X_test.reshape(-1, X_train.shape[1], 1)
-        for i in range(num_clients):
-            X_c, y_c = client_datasets[i]
-            client_datasets[i] = (X_c.reshape(-1, X_train.shape[1], 1), y_c)
-    else:
-        input_shape = (X_train.shape[1],)
-        X_test_run = X_test
-
-    num_classes = len(np.unique(y_train)) if task == 'multiclass' else None
+    input_shape = X_train.shape[1]
+    num_classes = len(np.unique(y_train)) if task == 'multiclass' else 2
+    
+    # Create DataLoaders
+    batch_size = 512
+    client_loaders = []
+    for i in range(num_clients):
+        X_c, y_c = client_datasets[i]
+        dataset = TensorDataset(torch.tensor(X_c, dtype=torch.float32), 
+                                torch.tensor(y_c, dtype=torch.long if task=='multiclass' else torch.float32))
+        client_loaders.append(DataLoader(dataset, batch_size=batch_size, shuffle=True))
+        
+    test_dataset = TensorDataset(torch.tensor(X_test, dtype=torch.float32), 
+                                 torch.tensor(y_test, dtype=torch.long if task=='multiclass' else torch.float32))
+    test_loader = DataLoader(test_dataset, batch_size=batch_size, shuffle=False)
+    
+    total_samples = sum(len(cd[0]) for cd in client_datasets)
+    client_weights = [len(cd[0]) / total_samples for cd in client_datasets]
     
     # Initialize global model
-    global_model = get_model(model_type, task, input_shape, num_classes)
-    global_weights = global_model.get_weights()
+    ModelClass = MLP if model_type == 'mlp' else CNN1D
+    global_model = ModelClass(input_shape, num_classes, task).to(device)
     
-    # Federated rounds
     num_rounds = NUM_ROUNDS
-    batch_size = 512
     local_epochs = 1
     
-    total_samples = sum(len(client_datasets[i][0]) for i in range(num_clients))
-    
     for r in range(num_rounds):
-        new_weights_list = []
+        new_state_dicts = []
         
         for i in range(num_clients):
-            X_c, y_c = client_datasets[i]
+            local_model = ModelClass(input_shape, num_classes, task).to(device)
+            local_model.load_state_dict(global_model.state_dict())
             
-            # Local model
-            local_base_model = get_model(model_type, task, input_shape, num_classes)
-            local_base_model.set_weights(global_weights)
+            train_client(local_model, global_model, client_loaders[i], task, strategy, mu, epochs=local_epochs)
             
-            if strategy.startswith('FedProx'):
-                model_to_train = ProximalModel(local_base_model, global_weights, mu=mu)
-            else:
-                model_to_train = local_base_model
+            new_state_dicts.append(copy.deepcopy(local_model.state_dict()))
+            
+            del local_model
+            torch.cuda.empty_cache()
+            gc.collect()
+            
+        # FedAvg Aggregation
+        avg_state_dict = copy.deepcopy(new_state_dicts[0])
+        for key in avg_state_dict.keys():
+            avg_state_dict[key] = avg_state_dict[key] * client_weights[0]
+            for i in range(1, num_clients):
+                avg_state_dict[key] += new_state_dicts[i][key] * client_weights[i]
                 
-            model_to_train = compile_model(model_to_train, task)
-            
-            # Train
-            model_to_train.fit(X_c, y_c, batch_size=batch_size, epochs=local_epochs, verbose=0)
-            
-            if strategy.startswith('FedProx'):
-                new_weights_list.append(model_to_train.model.get_weights())
-            else:
-                new_weights_list.append(model_to_train.get_weights())
-                
-        # Aggregate (Weighted FedAvg)
-        weighted_weights = []
-        for weights_group in zip(*new_weights_list):
-            avg = sum(w * (len(client_datasets[i][0]) / total_samples) for i, w in enumerate(weights_group))
-            weighted_weights.append(avg)
-            
-        global_weights = weighted_weights
-        global_model.set_weights(global_weights)
+        global_model.load_state_dict(avg_state_dict)
+        
+        # Free memory of new_state_dicts
+        del new_state_dicts
+        torch.cuda.empty_cache()
+        gc.collect()
         
         # Evaluate
-        eval_model = get_model(model_type, task, input_shape, num_classes)
-        eval_model.set_weights(global_weights)
-        eval_model = compile_model(eval_model, task)
+        loss, acc, prec, rec, f1, auc, ws, _ = evaluate_model(global_model, test_loader, task)
+        print(f"Round {r+1}/{num_rounds} - Loss: {loss:.4f}, Acc: {acc:.4f}")
         
-        loss, acc = eval_model.evaluate(X_test_run, y_test, verbose=0)
-        print(f"Round {r+1}/20 - Loss: {loss:.4f}, Acc: {acc:.4f}")
-        
-    # Final evaluation for metrics
-    y_pred_prob = eval_model.predict(X_test_run, verbose=0)
-    acc, prec, rec, f1, auc, ws = calculate_metrics(y_test, y_pred_prob, task)
+    # Final eval metrics
+    _, acc, prec, rec, f1, auc, ws, y_pred_prob = evaluate_model(global_model, test_loader, task)
     
     end_time = time.time()
     duration = end_time - start_time
     print(f"Scenario completed in {duration:.2f}s - Final WS: {ws:.4f}")
+    
+    del global_model
+    torch.cuda.empty_cache()
+    gc.collect()
     
     return {
         'Task': task.capitalize(),
@@ -285,7 +305,7 @@ def run_federated_scenario(X_train, y_train, X_test, y_test, num_clients, alpha,
 
 def main():
     import argparse
-    parser = argparse.ArgumentParser(description='NIDS-FL Thesis Benchmark')
+    parser = argparse.ArgumentParser(description='NIDS-FL Thesis Benchmark PyTorch')
     parser.add_argument('--quick', action='store_true', help='Quick mode: 3 rounds, binary MLP only')
     args = parser.parse_args()
 
@@ -303,9 +323,8 @@ def main():
     alphas = [0.3, 5.0]
     models = ['mlp'] if args.quick else ['mlp', 'cnn']
     
-    # Override rounds globally for quick mode
+    global NUM_ROUNDS
     if args.quick:
-        global NUM_ROUNDS
         NUM_ROUNDS = 3
     
     for task, data in datasets.items():
@@ -314,7 +333,7 @@ def main():
             
         X_train, X_test, y_train, y_test = data['X_train'], data['X_test'], data['y_train'], data['y_test']
         
-        # Ensure y is proper shape
+        # Ensure y is proper shape (1D for both binary and multiclass in PyTorch, but BCE needs float and CE needs long)
         if len(y_train.shape) > 1 and y_train.shape[1] > 1:
             y_train = np.argmax(y_train, axis=1)
             y_test = np.argmax(y_test, axis=1)
@@ -334,18 +353,17 @@ def main():
                 results.append(res_prox2)
 
     # Print clean table
-    print("\n=== THESIS BENCHMARK RESULTS ===")
+    print("\n=== THESIS BENCHMARK RESULTS (PYTORCH) ===")
     print(f"{'Task':<10} | {'Model':<7} | {'Strategy':<16} | {'Alpha':<5} | {'Acc':<7} | {'Prec':<7} | {'Rec':<7} | {'F1':<7} | {'AUC':<7} | {'WS':<7}")
     print("-" * 95)
     for r in results:
         print(f"{r['Task']:<10} | {r['Model']:<7} | {r['Strategy']:<16} | {r['Alpha']:<5} | {r['Acc']:.4f}  | {r['Prec']:.4f}  | {r['Rec']:.4f}  | {r['F1']:.4f}  | {r['AUC']:.4f}  | {r['WS']:.4f}")
 
     # Save to JSON
-    with open('thesis_benchmark_results.json', 'w') as f:
+    with open('thesis_benchmark_results_pytorch.json', 'w') as f:
         json.dump(results, f, indent=4)
         
-    print("\nBenchmark complete. Results saved to thesis_benchmark_results.json")
+    print("\nBenchmark complete. Results saved to thesis_benchmark_results_pytorch.json")
 
 if __name__ == '__main__':
     main()
-
