@@ -1,143 +1,68 @@
 # Network Intrusion Detection System using Federated Learning (NIDS-FL)
 
-## Overview
-Research implementation of Network Intrusion Detection System for Smart City environments using Federated Learning on the TON-IoT dataset.
+**Research Title**: Detection and Classification of Smart City Network Attacks Using Federated Learning on Network Traffic  
+**Author**: Rian Nur Ikhsan (22523297)
 
-**Research Title**: Detection and Classification of Smart City Network Attacks Using Federated Learning on Network Traffic
+## Overview
+This repository contains the full CRISP-DM implementation for the thesis research on Federated Learning (FL) applied to Smart City Intrusion Detection Systems (NIDS) using the TON-IoT dataset.
+
+To ensure robustness, solve Out-Of-Memory (OOM) leaks, and guarantee accurate apples-to-apples comparisons, the entire pipeline is orchestrated via a unified Bash script (`run_pipeline.sh`) and the Federated Learning backend has been completely **migrated to PyTorch**.
 
 ## Project Structure
 
-### Data Analysis & Preprocessing (`EDA/`)
-- **Preprocessing Pipeline**: Automated data cleaning and feature engineering (Updated to conform with `PREPROCESSING_IMPROVEMENTS.md`)
-  - Protocol-aware validation
-  - Security feature engineering (e.g., port categories, temporal properties, violation features like `weird_name`)
-  - Binary classification (Normal vs Attack)
-  - Multi-class classification (Attack type detection)
-  - Time saving: ~5-10 minutes → <5 seconds with preprocessed artifacts
-- **Exploratory Data Analysis**: Comprehensive dataset analysis and visualization
-- **Cleaned Dataset**: TON-IoT network traffic data (train/test split)
-
-### Federated Learning Implementations
-
-#### FL_TensorF_Flower_AVG (FedAvg)
-- **Algorithm**: Federated Averaging (McMahan et al.)
-- **Framework**: Flower + TensorFlow/Keras
-- **Features**:
-  - Multiple model architectures (MLP, CNN)
-  - Binary and multi-class classification
-  - Non-IID data distribution using Dirichlet distribution
-  - Comprehensive grid search for hyperparameter optimization
-- **Grid Search**: 20 hyperparameter combinations
-  - Batch sizes: [256, 512, 1024]
-  - Local epochs: [1, 2]
-  - Learning rates: [0.001, 0.0005]
-  - Alpha (Dirichlet): [0.3, 5.0] for data heterogeneity
-- **Components**:
-  - `client_app.py`: Client-side training logic
-  - `server_app.py`: Server-side aggregation
-  - `task.py`: Model definitions (MLP, CNN)
-  - `utils.py`: Data partitioning and evaluation utilities
-
-#### FL_TensorF_Flower_PROX (FedProx)
-- **Algorithm**: Federated Proximal (Li et al.)
-- **Key Difference**: Adds proximal term `(μ/2)||w - w^t||²` to local objective
-- **Benefits**:
-  - Handles system heterogeneity (varying client capabilities)
-  - Improved convergence for non-IID data
-  - Prevents local models from diverging too far from global model
-- **Proximal Term (μ)**: [0.001, 0.01]
-- **Similar grid search capabilities as FedAvg**
-
-### Experimental Results (`ShortResult/`)
-- Comprehensive training results and metrics
-- Performance comparison between FedAvg and FedProx
-- Various hyperparameter configurations (alpha 0.3 vs 5.0, different mu values)
+- **`run_pipeline.sh`**: The master orchestrator script. Runs the entire CRISP-DM pipeline from data ingestion to Markdown report generation.
+- **`benchmark_federated_algorithms.py`**: The core PyTorch FL simulation engine. Replaces the old TensorFlow/Flower implementation. Features aggressive VRAM garbage collection (`torch.cuda.empty_cache()`) to prevent OOM errors across thousands of training rounds.
+- **`phase2_data_understanding.py`**: Performs EDA and outputs statistical distribution of the raw network data.
+- **`phase5_report_generator.py`**: Automatically parses JSON results and generates the final English academic report (`THESIS_EXPERIMENT_REPORT.md`).
+- **`EDA/preprocessing_pipeline.py`**: The data cleaning script that generates lightweight `.pkl` artifacts.
+- **`Research_Notebooks/`**: Contains all historical Jupyter Notebooks (`.ipynb`) used for past EDA, Flower tests, and TensorFlow grid searches.
+- **`train_test_network.csv`**: The raw TON-IoT network dataset (must be placed in the project root).
 
 ## Key Features
 
-### Model Architectures
-- **MLP (Multi-Layer Perceptron)**:
-  - Input layer (45 features after preprocessing)
-  - Hidden layers with dropout for regularization
-  - Binary output (sigmoid) or multi-class output (softmax)
-- **CNN (Convolutional Neural Network)**:
-  - 1D convolution for network traffic patterns
-  - Max pooling and dropout layers
-  - Dense layers for classification
+1. **PyTorch Engine**: Fully hardware-aware (`.to(device)`) PyTorch implementation that maximally utilizes NVIDIA GPUs without crashing.
+2. **Apples-to-Apples Evaluation**: Uses a seeded Dirichlet distribution logic to ensure `FedAvg` and `FedProx` are evaluated on the exact same Non-IID data splits.
+3. **Automated CRISP-DM**: The pipeline handles Phase 1 to Phase 5 autonomously.
+4. **Custom FedProx**: Exact mathematical implementation of the proximal term $\frac{\mu}{2} ||w - w^t||^2$ injected directly into the PyTorch `loss.backward()` gradient calculation.
 
-### Data Partitioning
-- **Non-IID Distribution**: Dirichlet distribution simulation
-  - Alpha = 0.3: High heterogeneity (realistic scenario)
-  - Alpha = 5.0: Near-IID (baseline comparison)
-- **Clients**: Configurable (typically 3-5 clients)
-- **Federated Rounds**: 20-50 rounds per experiment
+## How to Run (Quick Start)
 
-### Evaluation Metrics
-- Accuracy
-- Precision
-- Recall
-- F1-Score
-- Training/validation loss curves
-- Confusion matrices
+The entire experiment is designed to be executed with a single command. 
 
-## Quick Start
-
-### 1. Data Preprocessing
+### 1. Setup Environment
+Ensure your Python virtual environment has PyTorch installed with CUDA support.
 ```bash
-cd EDA
-python preprocessing_pipeline.py --mode full
+source ../Paper/.venv/bin/activate
+pip install torch torchvision torchaudio pandas numpy scikit-learn
 ```
 
-### 2. Run FedAvg Experiment
+### 2. Prepare Dataset
+Ensure `train_test_network.csv` is located in the root of this repository (`NIDS-FL/`).
+
+### 3. Run the Full Pipeline
+To run the full thesis experiment (Preprocessing -> EDA -> FL Benchmark -> Report):
 ```bash
-cd FL_TensorF_Flower_AVG
-pip install -r requirements.txt
-python verify_setup.py
-# Run via notebook or CLI
-flwr run .
+./run_pipeline.sh
 ```
 
-### 3. Run FedProx Experiment
+### 4. Run Benchmark Only (Skip Preprocessing)
+If you have already generated the `.pkl` files and only want to re-run the PyTorch Federated Learning benchmark:
 ```bash
-cd FL_TensorF_Flower_PROX
-pip install -r requirements.txt
-python verify_setup.py
-# Run via notebook or CLI
-flwr run . --run-config "mu=0.01"
+./run_pipeline.sh --skip-preprocessing
 ```
 
-### 4. Grid Search (Optional)
-```bash
-cd FL_TensorF_Flower_AVG/gridsearch_research
-python run_gridsearch.py
-```
+## Experimental Scenarios
 
-## Requirements
-- Python 3.8+
-- TensorFlow >= 2.12.0
-- Flower (flwr) >= 1.23.0
-- pandas, scikit-learn, matplotlib, seaborn
-- TON-IoT dataset (cleaned version)
+The `benchmark_federated_algorithms.py` script automatically runs 24 thesis-aligned scenarios:
+- **Tasks**: Binary Classification vs Multiclass Classification
+- **Models**: MLP vs CNN-1D
+- **Algorithms**: FedAvg vs FedProx (μ=0.01, μ=0.001)
+- **Data Heterogeneity (Non-IID)**: Dirichlet Alpha = 0.3 (extreme) vs 5.0 (IID-like)
+- **Settings**: 5 Clients, 20 Communication Rounds, Batch Size = 512.
 
-## Dataset
-**TON-IoT Network Dataset**: IoT/IIoT network traffic with labeled attacks
-- Network features: 45 selected features after preprocessing
-- Attack types: DDoS, DoS, Scanning, Backdoor, XSS, Password, Injection, Ransomware, MITM
-- Binary labels: Normal (0) vs Attack (1)
-- Multi-class labels: 9 attack categories + Normal
+## Output Artifacts
 
-## Research Contributions
-- Implementation of FedAvg and FedProx for network intrusion detection
-- Comprehensive hyperparameter optimization framework
-- Non-IID data distribution simulation for realistic federated scenarios
-- Performance comparison across different data heterogeneity levels
-- Model architecture comparison (MLP vs CNN) for network traffic analysis
-
-## Project Status
-Active research project - Thesis in progress
-
-## License
-Academic research project
-
-## Contact
-- **Author**: elnoersan (Nur Ikhsan)
+Upon completion, the pipeline automatically generates:
+1. `THESIS_EXPERIMENT_REPORT.md`: A comprehensive, formatted English academic report ready to be attached to your thesis.
+2. `thesis_benchmark_results_pytorch.json`: Raw benchmark metrics for plotting and evaluation.
+3. `EDA/data_understanding_report.json`: Data statistics.
