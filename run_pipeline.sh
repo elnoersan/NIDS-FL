@@ -26,10 +26,9 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VENV_PYTHON="${SCRIPT_DIR}/../Paper/.venv/bin/python"
 
 # ─── Enable GPU (CUDA via pip) ──────────────────────────────────────────
-# Find the venv site-packages directory to locate pip-installed CUDA libraries
-SITE_PACKAGES=$($VENV_PYTHON -c 'import site; print(site.getsitepackages()[0])')
-export LD_LIBRARY_PATH="${SITE_PACKAGES}/nvidia/cuda_runtime/lib:${SITE_PACKAGES}/nvidia/cudnn/lib:${SITE_PACKAGES}/nvidia/cublas/lib:${SITE_PACKAGES}/nvidia/cufft/lib:${SITE_PACKAGES}/nvidia/curand/lib:${SITE_PACKAGES}/nvidia/cusolver/lib:${SITE_PACKAGES}/nvidia/cusparse/lib:${SITE_PACKAGES}/nvidia/nccl/lib:${LD_LIBRARY_PATH:-}"
-RAW_DATA="${SCRIPT_DIR}/../Paper/NotebookTODO/train_test_network.csv"
+# PyTorch automatically uses its own bundled CUDA/cuDNN libraries.
+# Do not force LD_LIBRARY_PATH to avoid CUDNN_STATUS_SUBLIBRARY_VERSION_MISMATCH
+RAW_DATA="${SCRIPT_DIR}/train_test_network.csv"
 BINARY_PKL="${SCRIPT_DIR}/EDA/processed_artifacts/binary_preprocessed.pkl"
 MULTI_PKL="${SCRIPT_DIR}/EDA/processed_artifacts/multiclass_preprocessed.pkl"
 REPORT_FILE="${SCRIPT_DIR}/THESIS_EXPERIMENT_REPORT.md"
@@ -228,8 +227,7 @@ log_info "Starting Federated Learning benchmark..."
 log_info "This may take 15-40 minutes on Ryzen 5 3500 (CPU mode)..."
 echo ""
 
-$VENV_PYTHON "${SCRIPT_DIR}/benchmark_federated_algorithms.py" $BENCHMARK_ARGS \
-    2>&1 | tee "${LOG_DIR}/phase4_benchmark.log"
+$VENV_PYTHON "${SCRIPT_DIR}/benchmark_federated_algorithms.py" $BENCHMARK_ARGS
 
 log_success "Modeling & Evaluation complete ($(elapsed_since $PHASE4_START))"
 
