@@ -30,7 +30,7 @@ def generate_report(eda_path, benchmark_path, output_path):
     # ---------------------------------------------------------
     def get_eda_section():
         if not eda_data:
-            return "[Data EDA tidak ditemukan atau gagal dimuat.]\n"
+            return "[EDA data not found or failed to load.]\n"
         
         shape = eda_data.get("shape", "N/A")
         
@@ -43,7 +43,7 @@ def generate_report(eda_path, benchmark_path, output_path):
         high_corr = eda_data.get("high_correlation_pairs", [])
         
         section = f"- **Dataset shape**: {shape}\n"
-        section += "- **Duplicate count**: {duplicates}\n\n"
+        section += f"- **Duplicate count**: {duplicates}\n\n"
         
         section += "### Class Distribution (Multiclass)\n"
         mc_headers = ["Class", "Count"]
@@ -57,9 +57,9 @@ def generate_report(eda_path, benchmark_path, output_path):
         
         section += "### Missing Value Summary\n"
         if missing:
-            section += "- Terdapat missing values pada fitur tertentu.\n"
+            section += "- Missing values are present in specific features.\n"
         else:
-            section += "- Tidak ada missing values yang signifikan.\n"
+            section += "- No significant missing values found.\n"
             
         section += "\n### High Correlation Pairs\n"
         if high_corr:
@@ -67,7 +67,7 @@ def generate_report(eda_path, benchmark_path, output_path):
             hc_rows = [[item[0], item[1], f"{item[2]:.4f}"] for item in high_corr]
             section += format_table(hc_headers, hc_rows) + "\n"
         else:
-            section += "- Tidak ada fitur dengan korelasi yang sangat tinggi.\n"
+            section += "- No extremely high correlation features detected.\n"
             
         return section
 
@@ -77,7 +77,7 @@ def generate_report(eda_path, benchmark_path, output_path):
     def get_benchmark_modeling_section():
         section = "### Federated Learning Configuration\n"
         fl_rows = [
-            ["Clients", "5 (Residensial, Transportasi, Kesehatan, Industri, Pemerintahan)"],
+            ["Clients", "5 (Residential, Transportation, Healthcare, Industrial, Government)"],
             ["Communication Rounds", "20 (or 3 in Quick Mode)"],
             ["Local Epochs", "1"],
             ["Batch Size", "512"],
@@ -88,17 +88,17 @@ def generate_report(eda_path, benchmark_path, output_path):
         section += format_table(["Parameter", "Value"], fl_rows) + "\n\n"
         
         section += "### Model Architectures\n"
-        section += "- **MLP**: Multi-Layer Perceptron digunakan sebagai baseline.\n"
-        section += "- **CNN-1D**: Convolutional Neural Network 1D digunakan untuk mengekstraksi pola sekuensial dari data jaringan.\n\n"
+        section += "- **MLP**: Multi-Layer Perceptron is utilized as the baseline.\n"
+        section += "- **CNN-1D**: A 1D Convolutional Neural Network is utilized to extract sequential patterns from the network data.\n\n"
         
         section += "### Non-IID Simulation\n"
-        section += "- **Method**: Dirichlet Distribution (α=0.3 untuk Non-IID ekstrim, α=5.0 untuk distribusi menyerupai IID).\n"
+        section += "- **Method**: Dirichlet Distribution (α=0.3 for extreme Non-IID, α=5.0 for IID-like distribution).\n"
         
         return section
 
     def get_benchmark_evaluation_section():
         if not benchmark_data or not isinstance(benchmark_data, list):
-            return "[Data Benchmark tidak ditemukan atau format tidak sesuai.]\n"
+            return "[Benchmark data not found or invalid format.]\n"
             
         section = ""
         
@@ -131,50 +131,50 @@ def generate_report(eda_path, benchmark_path, output_path):
                 
             section += format_table(headers, rows) + "\n\n"
             
-        section += "### Analisis FedAvg vs FedProx\n"
-        section += "- FedProx umumnya memberikan stabilitas lebih baik pada distribusi Non-IID yang ekstrem (alpha kecil).\n"
-        section += "- FedAvg dapat hội tụ lebih cepat namun terkadang mengalami osilasi pada data yang sangat tidak seimbang.\n\n"
+        section += "### FedAvg vs FedProx Analysis\n"
+        section += "- FedProx generally provides better stability under extreme Non-IID distributions (small alpha).\n"
+        section += "- FedAvg can converge faster but sometimes experiences oscillations on highly imbalanced data.\n\n"
         
         section += "### Best Model Identification\n"
-        section += "- Berdasarkan nilai F1-Score dan AUC, pilih kombinasi model dan algoritma FL yang memberikan trade-off terbaik antara akurasi dan stabilitas.\n"
+        section += "- Based on the F1-Score and AUC metrics, choose the combination of model and FL algorithm that provides the optimal trade-off between accuracy and stability.\n"
         
         return section
 
     # ---------------------------------------------------------
     # Assemble the Markdown Report
     # ---------------------------------------------------------
-    report = f"""# Laporan Eksperimen: Deteksi dan Klasifikasi Serangan Jaringan Smart City Menggunakan Federated Learning
+    report = f"""# Experiment Report: Detection and Classification of Smart City Network Attacks Using Federated Learning
 
-**Tanggal**: {timestamp}
-**Peneliti**: Rian Nur Ikhsan (22523297)
-**Institusi**: Universitas Islam Indonesia
+**Date**: {timestamp}
+**Researcher**: Rian Nur Ikhsan (22523297)
+**Institution**: Universitas Islam Indonesia
 
 ---
 
-## Fase 1: Business Understanding
-Penelitian ini bertujuan untuk mengatasi tantangan dalam mendeteksi anomali dan serangan pada jaringan Smart City yang terdistribusi. Penggunaan *Federated Learning* (FL) dimotivasi oleh kebutuhan krusial untuk menjaga privasi data antar entitas (privacy preservation) sembari membangun model deteksi intrusi (NIDS) yang tangguh dan kolaboratif tanpa perlu mensentralisasi data mentah.
+## Phase 1: Business Understanding
+This research aims to address the challenges in detecting anomalies and attacks across distributed Smart City networks. The implementation of *Federated Learning* (FL) is motivated by the critical need to preserve data privacy among entities (privacy preservation) while building robust and collaborative Intrusion Detection System (NIDS) models without centralizing raw data.
 
-## Fase 2: Data Understanding
+## Phase 2: Data Understanding
 {get_eda_section()}
 
-## Fase 3: Data Preparation
-Pada fase ini, dilakukan pra-pemrosesan data untuk memastikan kualitas input ke model FL:
-- **Protocol-aware cleaning**: Menangani anomali terkait protokol jaringan tertentu.
-- **Categorical encoding**: Penggunaan Label Encoding untuk label kelas dan OneHot Encoding untuk fitur kategorikal lainnya.
-- **Variance thresholding**: Menghilangkan fitur konstan atau dengan variansi sangat rendah untuk mengurangi noise.
-- **StandardScaler normalization**: Menormalisasi fitur numerik agar berada pada skala yang sama.
-- **Stratified split**: Membagi dataset menjadi 80% data latih dan 20% data uji secara proporsional.
-- **No SMOTE decision**: Memutuskan untuk tidak menggunakan SMOTE guna mempertahankan distribusi asli data serangan dalam simulasi FL.
-- **Final feature count**: (Disesuaikan berdasarkan output preprocessing).
+## Phase 3: Data Preparation
+In this phase, data preprocessing was conducted to ensure the input quality for the FL models:
+- **Protocol-aware cleaning**: Handling anomalies related to specific network protocols.
+- **Categorical encoding**: Using Label Encoding for class labels and OneHot Encoding for other categorical features.
+- **Variance thresholding**: Eliminating constant features or those with extremely low variance to reduce noise.
+- **StandardScaler normalization**: Normalizing numerical features to reside on the same scale.
+- **Stratified split**: Partitioning the dataset into 80% training data and 20% testing data proportionally.
+- **No SMOTE decision**: Decided against using SMOTE to preserve the original distribution of attack data within the FL simulation.
+- **Final feature count**: (Adjusted based on preprocessing output).
 
-## Fase 4: Modeling
+## Phase 4: Modeling
 {get_benchmark_modeling_section()}
 
-## Fase 5: Evaluation
+## Phase 5: Evaluation
 {get_benchmark_evaluation_section()}
 
-## Kesimpulan
-Eksperimen menunjukkan bahwa penerapan *Federated Learning* (baik FedAvg maupun FedProx) mampu membangun model deteksi intrusi yang cukup stabil dengan data terdistribusi secara Non-IID. Model CNN-1D dan MLP menunjukkan karakteristik yang berbeda dalam hal *training time* dan metrik kinerja, di mana hyperparameter tuning serta pilihan metode FL (FedAvg vs FedProx) memainkan peran penting dalam menyeimbangkan privasi data dan efisiensi deteksi serangan di lingkungan Smart City.
+## Conclusion
+The experiments demonstrate that implementing *Federated Learning* (both FedAvg and FedProx) is capable of building reasonably stable intrusion detection models using Non-IID distributed data. The CNN-1D and MLP models exhibit distinct characteristics in terms of training time and performance metrics, where hyperparameter tuning and the choice of FL methodology (FedAvg vs FedProx) play pivotal roles in balancing data privacy and attack detection efficiency in Smart City environments.
 """
 
     try:
