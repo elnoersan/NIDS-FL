@@ -14,18 +14,21 @@
 #
 # Requirements:
 #   - Python 3.11 venv at ../Paper/.venv
-#   - Raw dataset at ../Paper/NotebookTODO/train_test_network.csv
 # ==========================================================================
 
 set -euo pipefail
 
-# Force CPU mode for TensorFlow to suppress CUDA errors on systems without proper drivers
-export CUDA_VISIBLE_DEVICES="-1"
+# Setup TF logging
 export TF_CPP_MIN_LOG_LEVEL="3"
 
 # ─── Configuration ────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 VENV_PYTHON="${SCRIPT_DIR}/../Paper/.venv/bin/python"
+
+# ─── Enable GPU (CUDA via pip) ──────────────────────────────────────────
+# Find the venv site-packages directory to locate pip-installed CUDA libraries
+SITE_PACKAGES=$($VENV_PYTHON -c 'import site; print(site.getsitepackages()[0])')
+export LD_LIBRARY_PATH="${SITE_PACKAGES}/nvidia/cuda_runtime/lib:${SITE_PACKAGES}/nvidia/cudnn/lib:${SITE_PACKAGES}/nvidia/cublas/lib:${SITE_PACKAGES}/nvidia/cufft/lib:${SITE_PACKAGES}/nvidia/curand/lib:${SITE_PACKAGES}/nvidia/cusolver/lib:${SITE_PACKAGES}/nvidia/cusparse/lib:${SITE_PACKAGES}/nvidia/nccl/lib:${LD_LIBRARY_PATH:-}"
 RAW_DATA="${SCRIPT_DIR}/../Paper/NotebookTODO/train_test_network.csv"
 BINARY_PKL="${SCRIPT_DIR}/EDA/processed_artifacts/binary_preprocessed.pkl"
 MULTI_PKL="${SCRIPT_DIR}/EDA/processed_artifacts/multiclass_preprocessed.pkl"
